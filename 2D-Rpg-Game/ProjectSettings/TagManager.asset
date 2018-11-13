@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Caja
+  - Espada
+  - Attack
+  - Enemy
+  - Sword
+  - WayPoints
+  - 'Panel '
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Floor
+  - Player
+  - BackGround
+  - PhysicProps
+  - Enemy
+  - TriggerProbs
+  - WayPoints
+  - EnemyAttack
+  - Sword
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Escenario
+    uniqueID: 1986619667
+    locked: 0
+  - name: Entities
+    uniqueID: 3587248939
+    locked: 0
