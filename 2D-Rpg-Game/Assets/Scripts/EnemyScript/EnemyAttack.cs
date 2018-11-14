@@ -2,39 +2,67 @@
 
 public class EnemyAttack : MonoBehaviour
 {
-    #region Properties 
-    public bool Impacted
-    {
-        get { return _impacted; }
-        set { _impacted = value; }
-    }
-    #endregion
-
     #region Variables
     [SerializeField] private int _minDamage = 6;
     [SerializeField] private int _maxDamage = 12;
-    private bool _impacted = false;
+    [SerializeField] [Range(1f, 3f)] private float _minCoolDownAttack;
+    [SerializeField] [Range(3f, 10)] private float _maxCoolDownAttack;
+    [SerializeField] float _attackRange;
+    [SerializeField] string _animationName;
+    int _animationHash;
+    float _timer;
+    float _coolDown;
+    float _damage;
+    bool _playerInRange;
 
-    private IACombatSystem combatSystem;
+    Animator anim;
+    Transform player;
+    PlayerHealth playerhealth;
+    EnemyHealth ownHealth;
     #endregion
 
     void Awake ()
     {
-        combatSystem = GetComponentInParent<IACombatSystem>();
+        _animationHash = Animator.StringToHash(_animationName);
+        _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
+        _damage = Random.Range(_minDamage, _maxDamage);
+
+        anim = GetComponentInParent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerhealth = player.GetComponent<PlayerHealth>();
+        ownHealth = GetComponentInParent<EnemyHealth>();
     }
 
-    public void Attack ()
+    private void Update()
     {
-        int damage = Random.Range(_minDamage, _maxDamage);
-        combatSystem.PlayerHealth.TakeDamage(damage);
-        _impacted = false;
+        _timer += Time.deltaTime;
+        _playerInRange = (Vector2.Distance(player.position, transform.position) < _attackRange);
+
+        if((_timer > _coolDown) && _playerInRange)
+        {
+            Attack();
+        }
+    }
+
+    public void Attack()
+    {
+        if (!ownHealth.IsDead)
+        {
+            float damage = Random.Range(_minDamage, _maxDamage);
+            anim.CrossFade(_animationHash, 0f);
+            _timer = 0f;
+        }
     }
 
     void OnTriggerEnter2D (Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            _impacted = true;
+            IHealth health = other.transform.GetComponent<IHealth>();
+            if(health != null)
+            {
+                health.TakeDamage(_damage);
+            }
         }
     }
 }

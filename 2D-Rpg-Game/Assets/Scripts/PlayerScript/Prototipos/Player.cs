@@ -5,8 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("Campos de Player")]
+    [Header("Movimiento del jugador")]
     [SerializeField] private Movement motor;
+    [Header("Stadisticas del jugador")]
     [SerializeField] private CharacterStats stats;
+    [Header("Habilidades del jugador")]
     [SerializeField] private CombatActions combat;
 
     public Movement Motor => motor;

@@ -10,9 +10,11 @@ public class EnemyHealth : MonoBehaviour, IHealth
     #endregion
 
     [Header("Set Health Bar")]
-    [SerializeField] private Slider healthBar;
+
     [SerializeField] private int minInitialHealth = 39;
     [SerializeField] private int maxInitialHealth = 41;
+    [SerializeField] GameObject healthbar;
+    private Slider healthSlider;
     public float health;
 
     int dieHashID = Animator.StringToHash("Dead");
@@ -28,28 +30,28 @@ public class EnemyHealth : MonoBehaviour, IHealth
         sprite = GetComponent<SpriteRenderer>();
         body2D = GetComponent<Rigidbody2D>();
 
+
+        healthSlider = healthbar.GetComponentInChildren<Slider>();
         health = Random.Range(minInitialHealth, maxInitialHealth);
-        healthBar.maxValue = CurrentHealth;
-        healthBar.value = CurrentHealth;
+        healthSlider.maxValue = CurrentHealth;
+        healthSlider.value = CurrentHealth;
 	}
 
     //Aplicar nockback.
     public void TakeDamage(float damageAmount)
     {
-        health -= damageAmount;//Mathf.Lerp(0f, damageAmount, 2f * Time.deltaTime);
-        healthBar.value = CurrentHealth;
+        health -= damageAmount;
+        healthSlider.value = CurrentHealth;
         body2D.AddForce(new Vector2(body2D.velocity.x * -2f, 0f));
-
-        //EnemyIA decide cuando ejecutar el metodo Dead(); basado en sus estados.
     }
 
+    //EnemyIA decide cuando ejecutar el metodo Dead(); basado en sus estados.
     public void Die()
     {
         IsDead = true;
         anim.SetTrigger(dieHashID);
-        //sprite.color = Color.Lerp(sprite.color, new Color(1f, 1f, 1f, 0f), 0.5f * Time.deltaTime);
-        sprite.DOColor(new Color(1f, 1f, 1f, 0), 10f);
-        Physics2D.IgnoreLayerCollision(12, 9);
-        Destroy(gameObject, 9f);
+        healthbar.SetActive(false);
+        sprite.DOColor(new Color(1f, 1f, 1f, 0f), 5f);
+        Destroy(gameObject, 5.2f);
     }
 }

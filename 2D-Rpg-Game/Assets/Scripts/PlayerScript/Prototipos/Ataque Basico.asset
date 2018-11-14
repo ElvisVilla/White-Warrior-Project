@@ -15,7 +15,7 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 4096
-  _effect: 3
+  _effect: 10
   _energyConsumtion: 3
   _range: 2
   _coldDown: 0.7

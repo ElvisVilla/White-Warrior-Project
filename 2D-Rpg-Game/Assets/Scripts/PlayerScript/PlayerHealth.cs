@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour, IHealth {
 
     #region Properties 
-    public int CurrentHealth
+    public float CurrentHealth
     {
-        get { return currentHealth; }
+        get { return _currentHealth; }
         set
         {
-            currentHealth = Mathf.Clamp(currentHealth, 0, 100);
-            currentHealth = value;
+            _currentHealth = Mathf.Clamp(_currentHealth, 0, 100);
+            _currentHealth = value;
         }
     }
 
@@ -19,28 +19,24 @@ public class PlayerHealth : MonoBehaviour {
 
     #region Variables
     [Header("Set in Inspector")]
-    [SerializeField] int initialHealth = 100;
+    [SerializeField] float initialHealth = 100;
     [SerializeField] Slider healthBar;
-    int currentHealth;    
+    float _currentHealth;
 
-    private PlayerController playerController;
-    private PlayerCombatSystem playerCombatSystem;
     private Animator anim;
     #endregion
 
     // Use this for initialization
     void Awake ()
     {
-        anim = GetComponentInChildren<Animator>();
-        playerController = GetComponent<PlayerController>();
-        playerCombatSystem = GetComponentInChildren<PlayerCombatSystem>();
+        anim = GetComponent<Animator>();
 
-        currentHealth = initialHealth;
-        healthBar.value = currentHealth;
+        _currentHealth = initialHealth;
+        healthBar.value = _currentHealth;
 	}
 
     //Debe aplicar nockback cuando es golpeado.
-    public void TakeDamage (int damage)
+    public void TakeDamage (float damage)
     {
         CurrentHealth -= damage;
 
@@ -55,21 +51,18 @@ public class PlayerHealth : MonoBehaviour {
                 break;
         }
         
-        healthBar.value = currentHealth;
-        if(currentHealth <= 0 && !IsDead)
+        healthBar.value = _currentHealth;
+        if(_currentHealth <= 0 && !IsDead)
         {
-            Death();
+            Die();
         }
     }
 
-    void Death ()
+    //De momento no la llamamos por fuera de la clase.
+    public void Die()
     {
         IsDead = true;
         anim.SetTrigger("Dying");
-
-        playerCombatSystem.enabled = false;
-        playerController.enabled = false;
         //Ejecutar escena GameOver.
-
     }
 }

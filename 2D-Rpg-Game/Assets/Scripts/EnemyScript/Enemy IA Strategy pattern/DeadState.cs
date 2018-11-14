@@ -28,8 +28,7 @@ public class DeadState : IState
     public void Excecute()
     {
         enemyMotor.Move(0f);
-
-        if(health.IsDead == false)
+        if(!health.IsDead)
             health.Die();
     }
 
