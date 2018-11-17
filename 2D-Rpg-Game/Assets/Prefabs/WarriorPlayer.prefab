@@ -11,6 +11,21 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1997405344343800}
   m_IsPrefabAsset: 1
+--- !u!1 &1051174416435366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4594136865751802}
+  m_Layer: 9
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1360823238843166
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,8 +86,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1563128252377524}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.46, y: -0.14, z: 0}
-  m_LocalScale: {x: 1.7000002, y: 1, z: 1}
+  m_LocalPosition: {x: 1.22, y: -0.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4581227046373194}
   m_RootOrder: 1
@@ -97,14 +112,28 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1997405344343800}
   m_LocalRotation: {x: -0, y: -0, z: 0.01745245, w: 0.99984777}
-  m_LocalPosition: {x: -0.44, y: -1.85, z: 0}
+  m_LocalPosition: {x: 0.04, y: -1.69, z: 0}
   m_LocalScale: {x: 1.15, y: 1.15, z: 0}
   m_Children:
   - {fileID: 4313924071190182}
   - {fileID: 4247802925795362}
+  - {fileID: 4594136865751802}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2}
+--- !u!4 &4594136865751802
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1051174416435366}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.42, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4581227046373194}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50580962392318966
 Rigidbody2D:
   serializedVersion: 4
@@ -264,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6feba84bc9646d84daaf846a1ad46215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialHealth: 100
+  initialHealth: 25
   healthBar: {fileID: 0}
 --- !u!114 &114752052259364630
 MonoBehaviour:
@@ -278,22 +307,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motor:
-    inputMode: 0
+    inputMode: 1
     tactileControls: {fileID: 0}
     joystick: {fileID: 0}
-    hit: 0
     groundCheck: {fileID: 4313924071190182}
     whatIsGround:
       serializedVersion: 2
-      m_Bits: 2304
+      m_Bits: 133376
+    wallCheck: {fileID: 4594136865751802}
+    whatIsWall:
+      serializedVersion: 2
+      m_Bits: 131072
+    wallContactRadius: 0.5
+    wallContact: 0
   stats: {fileID: 11400000, guid: 910a33178690a074386b478182d2dc27, type: 2}
   combat:
     weapon: {fileID: 4247802925795362}
     abilities:
-    - {fileID: 11400000, guid: 80998ff3da974fe47af850cc27015ae8, type: 2}
-    - {fileID: 11400000, guid: 25da71b04db8fb14f89ea95966456010, type: 2}
-    - {fileID: 11400000, guid: 5c93d089945309f4aa49925ba08b6be5, type: 2}
     - {fileID: 11400000, guid: 97f48d28c9d720e49b4d4919ca487269, type: 2}
+    - {fileID: 11400000, guid: 5c93d089945309f4aa49925ba08b6be5, type: 2}
+    - {fileID: 11400000, guid: 25da71b04db8fb14f89ea95966456010, type: 2}
+    - {fileID: 11400000, guid: 80998ff3da974fe47af850cc27015ae8, type: 2}
+  Interaction: 1
 --- !u!212 &212041339333239670
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -376,7 +411,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: a2bc63a7c190d3f4ca54ee3c262cf5b8, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5529412}
+  m_Color: {r: 0.4716981, g: 0.4684784, b: 0.38047346, a: 0.5529412}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

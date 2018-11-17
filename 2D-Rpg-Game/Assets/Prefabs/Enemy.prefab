@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 95206351969143552}
   - component: {fileID: 70225518499295490}
   - component: {fileID: 114032130124301288}
-  - component: {fileID: 114124669680322930}
+  - component: {fileID: 114429798687200254}
   m_Layer: 12
   m_Name: Enemy
   m_TagString: Enemy
@@ -184,7 +184,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1158134616354174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.37, y: -3.11, z: 0}
+  m_LocalPosition: {x: 8.89, y: -3.05, z: 0}
   m_LocalScale: {x: 1.15, y: 1.15, z: 1}
   m_Children:
   - {fileID: 4510928747093550}
@@ -274,7 +274,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.1, y: -0.15}
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minInitialHealth: 20
   maxInitialHealth: 25
-  healthbar: {fileID: 0}
+  healthbar: {fileID: 1983052277703344}
   health: 0
 --- !u!114 &114036048999267262
 MonoBehaviour:
@@ -350,40 +350,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &114124669680322930
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1158134616354174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e86cf1d12223544598a25334827553b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyInfo:
-    necesaryLayers:
-      serializedVersion: 2
-      m_Bits: 512
-    patrolRange: 4
-    stopingDistance: 1.2
-    playerReference: {fileID: 0}
-    speed: 1.2
-    patrolSpeed: 1.2
-    combatSpeed: 2.3
-    chaseSpeed: 3.6
-    facingRight: 1
-    shouldStop: 0
-    WhatIsPlayer:
-      serializedVersion: 2
-      m_Bits: 512
-    SightOrigin: {fileID: 4704188479818800}
-    SightDistance: 2
-    whatIsGround:
-      serializedVersion: 2
-      m_Bits: 256
-    groundDetector: {fileID: 4464996910694468}
-    rayDistance: 2
 --- !u!114 &114170014624872318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -395,8 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accccd597cff97642830dbc6cd15621b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDamage: 2
-  _maxDamage: 3
+  _minDamage: 4
+  _maxDamage: 9
   _minCoolDownAttack: 1
   _maxCoolDownAttack: 3
   _attackRange: 1.2
@@ -538,6 +504,37 @@ MonoBehaviour:
   m_UseImpactDirection: 1
   m_ScaleImpactWithMass: 0
   m_ScaleImpactWithSpeed: 0
+--- !u!114 &114429798687200254
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158134616354174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e86cf1d12223544598a25334827553b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyInfo:
+    patrolRange: 4
+    combatRange: 5
+    chaseRange: 7
+    stopingDistance: 1.2
+    reference: {fileID: 0}
+    patrolSpeed: 1.2
+    combatSpeed: 2.3
+    chaseSpeed: 3.4
+    WhatIsPlayer:
+      serializedVersion: 2
+      m_Bits: 512
+    SightOrigin: {fileID: 4704188479818800}
+    SightDistance: 2
+    whatIsGround:
+      serializedVersion: 2
+      m_Bits: 256
+    groundDetector: {fileID: 4464996910694468}
+    rayDistance: 2
+  facing: 1
 --- !u!114 &114842156436268264
 MonoBehaviour:
   m_ObjectHideFlags: 1

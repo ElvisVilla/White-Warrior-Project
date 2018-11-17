@@ -24,14 +24,17 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     float _currentHealth;
 
     private Animator anim;
+    private Movement movement;
     #endregion
 
     // Use this for initialization
     void Awake ()
     {
         anim = GetComponent<Animator>();
+        movement = GetComponent<Player>().Motor;
 
         _currentHealth = initialHealth;
+        healthBar.maxValue = initialHealth;
         healthBar.value = _currentHealth;
 	}
 
@@ -39,6 +42,9 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     public void TakeDamage (float damage)
     {
         CurrentHealth -= damage;
+        healthBar.value = _currentHealth;
+        StartCoroutine(movement.OnHit());
+
 
         int animHitParameter = Random.Range(1, 3);
         switch(animHitParameter)
@@ -51,7 +57,6 @@ public class PlayerHealth : MonoBehaviour, IHealth {
                 break;
         }
         
-        healthBar.value = _currentHealth;
         if(_currentHealth <= 0 && !IsDead)
         {
             Die();

@@ -6,9 +6,6 @@ using DG.Tweening;
 [RequireComponent(typeof(AudioSource))]
 public class BushInteraction : MonoBehaviour
 {
-    [Header("Toggle for DrawGizmos")]
-    [SerializeField] bool DrawGizmos;
-
     [Header("Physics data")]
     [SerializeField] Vector2 boxCollisionSize;
     [SerializeField] LayerMask whatIsEntities;
@@ -16,10 +13,6 @@ public class BushInteraction : MonoBehaviour
     [Header("Sound")]
     [SerializeField] AudioClip clip;
     [Range(0f, 1f)] [SerializeField] float volume;
-    
-    [Header("Sprite effect")]
-    [SerializeField] float colorLerpingValue;
-    [SerializeField] int orderInLayerIndex;
 
     int animID = Animator.StringToHash("Move");
     bool alreadyPlayed = false;
@@ -33,13 +26,11 @@ public class BushInteraction : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-
-        sprite.sortingOrder = orderInLayerIndex;
+        alreadyPlayed = false;
     }
 
     private void Update()
     {
-        sprite.color = new Color(1f, 1f, 1f, 1f);
         var hitInfo = Physics2D.OverlapBox(transform.position, boxCollisionSize, 0f, whatIsEntities);
         PerformInteraction(hitInfo);
     }
@@ -48,11 +39,11 @@ public class BushInteraction : MonoBehaviour
     {
         if (hitInfo != null)
         {
-            int sortingOrder = hitInfo.GetComponentInChildren<SpriteRenderer>().sortingOrder;
+            int sortingOrder = hitInfo.GetComponent<SpriteRenderer>().sortingOrder;
 
-            if (sortingOrder < sprite.sortingOrder) //Los Arbustos que esten por detras de los entities no seran transparentes.
+            if (sortingOrder < sprite.sortingOrder)
             {
-                sprite.DOBlendableColor(new Color(1f, 1f, 1f, 0.5f), 0.5f);  
+                sprite.DOFade(0.6f, 0.7f);
             }
 
             anim.SetTrigger(animID);
@@ -63,18 +54,16 @@ public class BushInteraction : MonoBehaviour
                 alreadyPlayed = true;
             }
         }
-        else //When hitInfo comes to null then alreadyPlayed goes false that allow to Player the bush sound again
+        else
         {
             alreadyPlayed = false;
+            sprite.DOFade(1f, 0.4f);
         }
     }
 
     private void OnDrawGizmos()
     {
-        if(DrawGizmos)
-        {
-            Gizmos.color = Color.black;
-            Gizmos.DrawWireCube(transform.position, boxCollisionSize);
-        }
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireCube(transform.position, boxCollisionSize);
     }
 }

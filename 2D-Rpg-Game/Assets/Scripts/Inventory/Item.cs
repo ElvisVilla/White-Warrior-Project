@@ -30,25 +30,4 @@ public class Item : ScriptableObject
             {"SellValue", sellValue},
         };
     }
-
-    //Constructor o Init dependiendo de si es ScriptableObject.
-    /*public Item (Sprite icon, int ID, string title, string description, Dictionary<string, float> stats)
-    {
-        icon = Resources.Load<Sprite>("Sprites/Items/" + title);
-        this.ID = ID;
-        this.title = title;
-        this.description = description;
-        this.stats = stats;
-    }
-
-    public Item(Item item)
-    {
-        icon = Resources.Load<Sprite>("Sprites/Items/" + item.title);
-        ID = item.ID;
-        title = item.title;
-        description = item.description;
-        stats = item.stats;
-    }
-    */
-
 }

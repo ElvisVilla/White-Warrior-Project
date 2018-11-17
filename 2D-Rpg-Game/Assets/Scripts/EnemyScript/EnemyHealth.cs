@@ -37,12 +37,18 @@ public class EnemyHealth : MonoBehaviour, IHealth
         healthSlider.value = CurrentHealth;
 	}
 
+    private void Update()
+    {
+        sprite.color = Color.white;
+    }
+
     //Aplicar nockback.
     public void TakeDamage(float damageAmount)
     {
         health -= damageAmount;
         healthSlider.value = CurrentHealth;
         body2D.AddForce(new Vector2(body2D.velocity.x * -2f, 0f));
+        sprite.DOColor(Color.red, 0.1f);
     }
 
     //EnemyIA decide cuando ejecutar el metodo Dead(); basado en sus estados.

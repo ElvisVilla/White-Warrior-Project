@@ -17,7 +17,6 @@ public class EnemyAttack : MonoBehaviour
 
     Animator anim;
     Transform player;
-    PlayerHealth playerhealth;
     EnemyHealth ownHealth;
     #endregion
 
@@ -25,11 +24,9 @@ public class EnemyAttack : MonoBehaviour
     {
         _animationHash = Animator.StringToHash(_animationName);
         _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
-        _damage = Random.Range(_minDamage, _maxDamage);
 
         anim = GetComponentInParent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerhealth = player.GetComponent<PlayerHealth>();
         ownHealth = GetComponentInParent<EnemyHealth>();
     }
 
@@ -48,7 +45,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (!ownHealth.IsDead)
         {
-            float damage = Random.Range(_minDamage, _maxDamage);
+            _damage = Random.Range(_minDamage, _maxDamage);
             anim.CrossFade(_animationHash, 0f);
             _timer = 0f;
         }

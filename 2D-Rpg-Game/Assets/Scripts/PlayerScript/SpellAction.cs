@@ -10,8 +10,6 @@ public class SpellAction : MonoBehaviour, IPointerDownHandler
     private Image ownImage;
     private Image childImage;
     public Ability ability;
-    //bool cd = false;
-    float timer = 0f;
     [HideInInspector] public int index;
     [HideInInspector] public Player player;
 
@@ -42,16 +40,6 @@ public class SpellAction : MonoBehaviour, IPointerDownHandler
         {
             ownImage.color = new Color(0, 0, 0, 0);
         }
-
-        /*timer += Time.deltaTime;
-        if (cd)
-        {
-            childImage.fillAmount -= Mathf.Lerp(1f, 0f, Time.deltaTime * ability.ColdDown);
-            if(timer > ability.ColdDown)
-            {
-                cd = false;
-            }
-        }*/
     }
 
     public void OnPointerDown(PointerEventData eventData)
