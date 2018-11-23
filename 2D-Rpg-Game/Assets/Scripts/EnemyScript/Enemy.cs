@@ -12,8 +12,8 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D Body2D { get; private set; }
     public Animator Anim { get; private set; }
     public EnemyInfo EnemyInfo => enemyInfo;
-    [SerializeField]private bool facing = true;
-    public bool FacingRight { get { return facing; } set { facing = value; } }
+    [SerializeField]private bool facingRight = true; //Nos permite cambiar la direccion inicial del enemigo.
+    public bool FacingRight { get { return facingRight; } set { facingRight = value; } }
     public float Speed { get; set; }
 
     PatrolState patrolState;

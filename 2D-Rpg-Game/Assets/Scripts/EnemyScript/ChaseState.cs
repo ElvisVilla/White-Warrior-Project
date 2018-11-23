@@ -22,7 +22,7 @@ public class ChaseState : State
 
     public override void Excecute()
     {
-        float distance = Vector2.Distance(enemyInfo.reference.transform.position, enemy.transform.position);
+        float distance = Vector2.Distance(enemyInfo.PlayerReference.transform.position, enemy.transform.position);
 
         PerformTransition(distance);
         motor.PerformMovement(enemy.Speed);

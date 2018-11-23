@@ -27,7 +27,7 @@ public class CombatState : State
         if (hitInfo != null)
         {
             playerPosition = hitInfo.transform.position;
-            enemyInfo.reference = hitInfo.gameObject;
+            enemyInfo.PlayerReference = hitInfo.gameObject;
         }
 
         var distance = Vector2.Distance(playerPosition, enemyPosition);
@@ -48,6 +48,9 @@ public class CombatState : State
 
         if((health.CurrentHealth <= 0) && !health.IsDead)
             OnDeadState();
+
+        if (enemyInfo.PlayerReference.GetComponent<PlayerHealth>().CurrentHealth <= 0)
+            OnPatrolState();
     }
 
     public override void Exit() { }

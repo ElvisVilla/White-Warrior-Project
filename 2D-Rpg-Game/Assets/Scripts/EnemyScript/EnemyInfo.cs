@@ -12,7 +12,7 @@ public class EnemyInfo
     public float combatRange = 5f;
     public float chaseRange = 7f;
     public float stopingDistance = 1.2f;
-    public GameObject reference;
+    public GameObject PlayerReference { get; set; }
 
     [Header("Enemy speed")]
     public float patrolSpeed = 1.2f;

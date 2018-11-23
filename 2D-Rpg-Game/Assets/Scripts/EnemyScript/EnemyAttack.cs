@@ -16,17 +16,19 @@ public class EnemyAttack : MonoBehaviour
     bool _playerInRange;
 
     Animator anim;
-    Transform player;
     EnemyHealth ownHealth;
+    Transform player;
+    IHealth playerHealth;
     #endregion
 
-    void Awake ()
+    void Awake()
     {
         _animationHash = Animator.StringToHash(_animationName);
         _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
 
         anim = GetComponentInParent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealth = player.GetComponent<PlayerHealth>();
         ownHealth = GetComponentInParent<EnemyHealth>();
     }
 
@@ -35,7 +37,7 @@ public class EnemyAttack : MonoBehaviour
         _timer += Time.deltaTime;
         _playerInRange = (Vector2.Distance(player.position, transform.position) < _attackRange);
 
-        if((_timer > _coolDown) && _playerInRange)
+        if ((_timer > _coolDown) && _playerInRange)
         {
             Attack();
         }
@@ -43,9 +45,10 @@ public class EnemyAttack : MonoBehaviour
 
     public void Attack()
     {
-        if (!ownHealth.IsDead)
+        if (!ownHealth.IsDead && playerHealth.CurrentHealth > 0)
         {
             _damage = Random.Range(_minDamage, _maxDamage);
+            _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
             anim.CrossFade(_animationHash, 0f);
             _timer = 0f;
         }
@@ -55,10 +58,10 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            IHealth health = other.transform.GetComponent<IHealth>();
-            if(health != null)
+            playerHealth = other.transform.GetComponent<PlayerHealth>();
+            if(playerHealth != null)
             {
-                health.TakeDamage(_damage);
+                playerHealth.TakeDamage(_damage);
             }
         }
     }

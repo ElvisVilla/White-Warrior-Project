@@ -8,48 +8,20 @@ public class SpellBar : MonoBehaviour
 {
     [Header("Personaje Actual")]
     public GameObject actualPlayer;
-    private List<Ability> Abilities = new List<Ability>();
     private Player player;
     private CombatActions combat;
 
     [Header("Panel de Habilidades.")]
-    [SerializeField] private GameObject Panel;
     [SerializeField] private GameObject spellPrefab;
-    private List<GameObject> slots = new List<GameObject>();
+    private GameObject actionBarPanel;
+    private List<GameObject> slotList = new List<GameObject>();
+    private List<Ability> abilities = new List<Ability>();
 
-	// Use this for initialization
-	void Awake ()
+    //Use this for initialization
+    void Awake ()
     {
         PlayerSetup();
-
-        for (int i = 0; i < Panel.transform.childCount; i++)
-        {
-            slots.Add(Panel.transform.GetChild(i).gameObject);
-            GameObject spell = Instantiate(spellPrefab);
-            spell.transform.SetParent(slots[i].transform);
-            spell.transform.localPosition = Vector3.zero;
-            
-            if(combat.abilities.Exists(item => item != null))
-            {
-                Abilities.Add(combat.GetAbilities(i));
-                if(Abilities[i] != null)
-                    spell.GetComponent<SpellAction>().SetSpellAbility(player, i, Abilities[i]);
-            }
-        } 
-    }
-
-    //Lo que el jugador arrastre a la barra de poderes debe actualizarse en las habilidades adentro de la barra de poderes y luego enviarse a combatActions.
-    void Update()
-    {
-        /*for (int i = 0; i < Panel.transform.childCount; i++)
-        {
-            Abilities.Add(combat.GetAbilities(i));
-            GameObject spell = slots[i].transform.GetChild(0).gameObject;
-            if(Abilities.Exists(item => item != null))
-            {
-                //spell.GetComponent<SpellAction>().SetSpellAbility(player, i, Abilities[i]);
-            }
-        }*/
+        SetupActionBar();
     }
 
     void PlayerSetup()
@@ -62,18 +34,63 @@ public class SpellBar : MonoBehaviour
             combat = player.Combat;
         }
         else
-        {
             Debug.LogError("No se ha encontrado el Personaje actual. Enlaza el Personaje en el inspector o asignale el tag de "
                 + "Player" + "para corregir el error");
-            return;
+    }
+
+    void SetupActionBar()
+    {
+        actionBarPanel = gameObject;
+
+        for (int counter = 0; counter < actionBarPanel.transform.childCount; counter++)
+        {
+            slotList.Add(actionBarPanel.transform.GetChild(counter).gameObject);
+            slotList[counter].GetComponent<Slot>().Index = counter;
+            GameObject spellObject = Instantiate(spellPrefab);
+            spellObject.transform.SetParent(slotList[counter].transform);
+            spellObject.transform.localPosition = Vector3.zero;
+
+            if (combat.abilities.Exists(item => item != null))
+            {
+                abilities.Add(combat.GetAbilities(counter));
+                spellObject.GetComponent<Spell>().SetSpell(player, counter, abilities[counter]);
+            }
         }
     }
 
-    //Este metodo debe estar en spellBar y dependiendo el index en el tenga ese spellGO en el paren determinaremos la posicion del ataque que deseamos obtener.
-    //una vez obtenemos el ataque es cuando realizamos metodo action, que por cierto recibe un Player.
-    public Ability GetActionFromAbilities(Player player, int index)
+    public void SwapSpell(Slot destinationSlot, Slot originalSlot)
     {
-        //Si conocemos el index de la lista de poderes accederemos al mismo poder o esa es la idea :'V.
-        return Abilities[index];
+        //Los slots tienen un index y con ello puedo saber a que index debo cambiar.
+        GameObject destinationSpell = destinationSlot.transform.GetChild(0).gameObject;
+        GameObject originalSpell = originalSlot.transform.GetChild(0).gameObject;
+
+        originalSpell.transform.SetParent(destinationSlot.transform);
+        originalSpell.transform.localPosition = Vector3.zero;
+        destinationSpell.transform.SetParent(originalSlot.transform);
+        destinationSpell.transform.localPosition = Vector3.zero;
     }
+
+    public Ability GetAbility(int index)
+    {
+        return abilities[index];
+    }
+
+    public List<Ability> GetAbilities()
+    {
+        return abilities;
+    }
+
+    public void SetAbilty(int index, Ability ab)
+    {
+        if (abilities[index].Equals(null))
+            abilities.Insert(index, ab);
+
+        else
+        {
+            abilities.RemoveAt(index);
+            abilities.Insert(index, ab);
+        }
+    }
+
+
 }

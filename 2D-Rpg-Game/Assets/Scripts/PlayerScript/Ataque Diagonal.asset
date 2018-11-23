@@ -15,10 +15,11 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 4096
+  _natureColor: {r: 0.47460878, g: 1, b: 0, a: 1}
   _effect: 5
   _energyConsumtion: 4
   _range: 1.5
   _coldDown: 2
-  _minValueSpeed: 4
-  _timeToTween: 2
+  _minValueSpeed: 20
+  _timeToTween: 0.2
   _animationName: AtaqueDiagonalCorriendo_warrior

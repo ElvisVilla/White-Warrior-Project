@@ -15,10 +15,11 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 4096
-  _effect: 10
+  _natureColor: {r: 1, g: 1, b: 1, a: 1}
+  _effect: 5
   _energyConsumtion: 2
   _range: 2
   _coldDown: 5
   _minValueSpeed: 6
-  _timeToTween: 1.6
+  _timeToTween: 2
   _animationName: AtaqueGiratorio_warrior

@@ -8,8 +8,6 @@ public class CharacterStats : ScriptableObject
     //Coleccion de atributos.
     Dictionary<string, float> stats;
 
-    //Variables de movilidad.
-    //[SerializeField] private float speed = 4.5f;
     [SerializeField] private float speed = 4.5f;
     public float Speed { get { return speed; } set { speed = value; } }
     public float MaxSpeed => 4f;
@@ -26,7 +24,9 @@ public class CharacterStats : ScriptableObject
 
     [SerializeField] private float magic = 10f;
     [SerializeField] private float abilityPower = 2f; //abilityPower va ser magic / 10;
-    
+    [SerializeField] private float jumpForce = 6f;
+    [SerializeField] private float extraJumpForce = 4f;
+
     private void OnEnable()
     {
         stats = new Dictionary<string, float>
@@ -36,10 +36,12 @@ public class CharacterStats : ScriptableObject
             {"health", health},
             {"strange", fuerza},
             {"damage", damage},
-            {"defence", defence },
+            {"defence", defence},
             {"armor", armor},
             {"magic", magic},
-            {"AbilityPower", abilityPower},
+            {"abilityPower", abilityPower},
+            {"jumpForce", jumpForce},
+            {"extraJumpForce", extraJumpForce}
         };
     }
 

@@ -17,6 +17,7 @@ public abstract class Ability : ScriptableObject
 {
     [SerializeField] protected Sprite _icon;
     [SerializeField] protected LayerMask _whatIsEnemy;
+    [SerializeField] protected Color _natureColor;
     [SerializeField] protected float _effect;
     [SerializeField] protected float _energyConsumtion;
     [SerializeField] protected float _range;
@@ -25,9 +26,11 @@ public abstract class Ability : ScriptableObject
     [SerializeField] protected float _timeToTween;
     [SerializeField] protected string _animationName;
     protected AbilityMode _abilityMode;
+    protected float _timer;
 
     public Sprite Icon => _icon;
     public LayerMask WhatIsEnemy => _whatIsEnemy;
+    public Color NatureColor => _natureColor;
     public AbilityMode AbilityMode => _abilityMode;
     public float Effect => _effect;
     public float EnergyComsumption => _energyConsumtion;

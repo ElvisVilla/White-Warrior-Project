@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 82925314251974194}
   - component: {fileID: 114214267308648382}
   - component: {fileID: 114752052259364630}
+  - component: {fileID: 320194792966667540}
   m_Layer: 9
   m_Name: WarriorPlayer
   m_TagString: Player
@@ -111,9 +112,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1997405344343800}
-  m_LocalRotation: {x: -0, y: -0, z: 0.01745245, w: 0.99984777}
-  m_LocalPosition: {x: 0.04, y: -1.69, z: 0}
-  m_LocalScale: {x: 1.15, y: 1.15, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.017452449, w: 0.9998477}
+  m_LocalPosition: {x: 0, y: -1.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 4313924071190182}
   - {fileID: 4247802925795362}
@@ -307,24 +308,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motor:
-    inputMode: 1
+    inputMode: 0
     tactileControls: {fileID: 0}
     joystick: {fileID: 0}
     groundCheck: {fileID: 4313924071190182}
     whatIsGround:
       serializedVersion: 2
       m_Bits: 133376
-    wallCheck: {fileID: 4594136865751802}
-    whatIsWall:
-      serializedVersion: 2
-      m_Bits: 131072
-    wallContactRadius: 0.5
-    wallContact: 0
+    grounded: 0
   stats: {fileID: 11400000, guid: 910a33178690a074386b478182d2dc27, type: 2}
   combat:
     weapon: {fileID: 4247802925795362}
     abilities:
-    - {fileID: 11400000, guid: 97f48d28c9d720e49b4d4919ca487269, type: 2}
+    - {fileID: 0}
     - {fileID: 11400000, guid: 5c93d089945309f4aa49925ba08b6be5, type: 2}
     - {fileID: 11400000, guid: 25da71b04db8fb14f89ea95966456010, type: 2}
     - {fileID: 11400000, guid: 80998ff3da974fe47af850cc27015ae8, type: 2}
@@ -421,3 +417,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!320 &320194792966667540
+PlayableDirector:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1997405344343800}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: c90084acaa874884583b121fb08ea07f, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0.5
+  m_SceneBindings:
+  - key: {fileID: 0}
+    value: {fileID: 95883815374097946}
+  - key: {fileID: 114790452511550980, guid: c90084acaa874884583b121fb08ea07f, type: 2}
+    value: {fileID: 95883815374097946}
+  - key: {fileID: 0}
+    value: {fileID: 0}
+  m_ExposedReferences:
+    m_References: []

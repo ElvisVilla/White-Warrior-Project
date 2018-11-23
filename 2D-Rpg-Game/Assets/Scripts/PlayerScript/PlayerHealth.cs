@@ -45,7 +45,6 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         healthBar.value = _currentHealth;
         StartCoroutine(movement.OnHit());
 
-
         int animHitParameter = Random.Range(1, 3);
         switch(animHitParameter)
         {
@@ -63,11 +62,19 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         }
     }
 
+    public void TakeHeal(float effect)
+    {
+        CurrentHealth += effect;
+        healthBar.value = CurrentHealth;
+    }
+
     //De momento no la llamamos por fuera de la clase.
     public void Die()
     {
         IsDead = true;
         anim.SetTrigger("Dying");
+        Physics2D.IgnoreLayerCollision(12, 9);
+        movement.OnDead(2000f); //Aun no funciona :'V
         //Ejecutar escena GameOver.
     }
 }
