@@ -1,31 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Campos de Player")]
-    [Header("Movimiento del jugador")]
     [SerializeField] private Movement motor;
-    [Header("Stadisticas del jugador")]
-    [SerializeField] private CharacterStats stats;
-    [Header("Habilidades del jugador")]
-    [SerializeField] private CombatActions combat;
+    [Header("")][SerializeField] private CharacterStats stats;
+    [Header("")][SerializeField] private CombatActions combat;
 
     public Movement Motor => motor;
     public CharacterStats Stats => stats;
     public CombatActions Combat => combat;
+    public PlayerHealth Health { get; private set; }
     public Animator Anim { get; private set; }
     public AudioSource Source { get; private set; }
     public Rigidbody2D Body2D { get; private set; }
 
+    CinemachineVirtualCamera CinemachineVirtualCam;
+    CinemachineBasicMultiChannelPerlin virtualCamNoise;
+    Ability ability;
+    float timer;
+
     private void Awake()
     {
+        Health = GetComponent<PlayerHealth>();
         Anim = GetComponent<Animator>();
         Body2D = GetComponent<Rigidbody2D>();
         Source = GetComponent<AudioSource>();
 
+        CinemachineVirtualCam = GameObject.FindGameObjectWithTag("PlayerCam").GetComponent<CinemachineVirtualCamera>();
+        virtualCamNoise = CinemachineVirtualCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
+        timer = 1f;
         if (stats != null)
         {
             motor.Init(this);
@@ -38,30 +43,39 @@ public class Player : MonoBehaviour
         //Actualizar los componentes
         motor.MovementUpdate(this);
         combat.CombatActionsUpdate(this);
-        //motor.OnInteraction(Interaction);
+
+        timer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            timer = 0;
+        }
+
+        if (timer < 0.8f)
+        {
+            virtualCamNoise.m_AmplitudeGain = 1.2f;
+            virtualCamNoise.m_FrequencyGain = 2f;
+        }
+        else
+        {
+            virtualCamNoise.m_AmplitudeGain = 0f;
+        }
     }
 
     public void PerformJump()
     {
-        motor.JumpForTactil();
+        if(!Health.IsDead)
+            motor.JumpForTactil();
     }
 
     //Aca llamaremos la logica de la animacion de ataques fisicos.
-    public void AnimationLogicBasicAttack()
+    public void AnimationLogicEvent()
     {
-        Ability ability = combat.GetAbilities(3);
         ability.OnLogicAttack(this);
     }
 
-    public void AnimationLogicSecondAttack()
+    public void SetAbilityToEvent(Ability ab)
     {
-        Ability ability = combat.GetAbilities(2);
-        ability.OnLogicAttack(this);
-    }
-    public void AnimationLogicThirdAttack()
-    {
-        Ability ability = combat.GetAbilities(1);
-        ability.OnLogicAttack(this);
+        ability = ab;
     }
 
     private void OnDrawGizmos()

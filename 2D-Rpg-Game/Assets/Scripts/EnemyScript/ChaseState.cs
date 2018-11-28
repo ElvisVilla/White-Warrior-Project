@@ -15,9 +15,8 @@ public class ChaseState : State
     public override void Enter()
     {
         bool movingRight = enemy.FacingRight;
-        Debug.Log(this + " " + enemy.FacingRight);
         enemy.Speed = (movingRight) ? enemyInfo.chaseSpeed : -enemyInfo.chaseSpeed;
-        motor.PerformMovement(enemy.Speed);
+        motor.PerformNormalMovement(enemy.Speed);
     }
 
     public override void Excecute()
@@ -25,7 +24,7 @@ public class ChaseState : State
         float distance = Vector2.Distance(enemyInfo.PlayerReference.transform.position, enemy.transform.position);
 
         PerformTransition(distance);
-        motor.PerformMovement(enemy.Speed);
+        motor.PerformNormalMovement(enemy.Speed);
     }
 
     private void PerformTransition(float distance)

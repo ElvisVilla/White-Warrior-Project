@@ -5,10 +5,10 @@ public class EnemyAttack : MonoBehaviour
     #region Variables
     [SerializeField] private int _minDamage = 6;
     [SerializeField] private int _maxDamage = 12;
-    [SerializeField] [Range(1f, 3f)] private float _minCoolDownAttack;
-    [SerializeField] [Range(3f, 10)] private float _maxCoolDownAttack;
-    [SerializeField] float _attackRange;
-    [SerializeField] string _animationName;
+    [SerializeField] [Range(1f, 3f)] private float _minCoolDownAttack = 1f;
+    [SerializeField] [Range(3f, 10)] private float _maxCoolDownAttack = 5f;
+    [SerializeField] float _attackRange = 2f;
+    [SerializeField] string _animationName = "Enemy_Attack";
     int _animationHash;
     float _timer;
     float _coolDown;

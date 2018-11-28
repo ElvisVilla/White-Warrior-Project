@@ -9,17 +9,18 @@ public abstract class State
     protected Enemy enemy;
     protected EnemyMovement motor;
 
-    public State(Enemy enemyIA)
+    public State(Enemy IA)
     {
-        enemy = enemyIA;
+        enemy = IA;
         body2D = enemy.Body2D;
         anim = enemy.Anim;
         enemyInfo = enemy.EnemyInfo;
         health = enemy.Health;
-        motor = new EnemyMovement(enemyIA);
+        motor = enemy.Motor;
     }
 
     public abstract void Enter();
     public abstract void Excecute();
     public abstract void Exit();
 }
+

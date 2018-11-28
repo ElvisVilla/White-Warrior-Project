@@ -17,13 +17,13 @@ MonoBehaviour:
   maxSmoothUnscaledTime: 0.15
   rewindCallbackMode: 0
   showUnityEditorReport: 0
-  logBehaviour: 0
+  logBehaviour: 2
   drawGizmos: 1
   defaultRecyclable: 0
   defaultAutoPlay: 3
   defaultUpdateType: 0
-  defaultTimeScaleIndependent: 0
-  defaultEaseType: 1
+  defaultTimeScaleIndependent: 1
+  defaultEaseType: 6
   defaultEaseOvershootOrAmplitude: 1.70158
   defaultEasePeriod: 0
   defaultAutoKill: 1
@@ -38,5 +38,5 @@ MonoBehaviour:
     uiEnabled: 1
     textMeshProEnabled: 0
     tk2DEnabled: 0
-  showPlayingTweens: 0
+  showPlayingTweens: 1
   showPausedTweens: 0

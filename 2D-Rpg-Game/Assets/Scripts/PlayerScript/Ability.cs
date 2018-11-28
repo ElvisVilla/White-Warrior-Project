@@ -7,10 +7,6 @@ public enum AbilityMode
     Range,
     Magic,
     Buff,
-    AOEMelee,
-    AOEMagic,
-    AOEHeal,
-    AOERange,
 }
 
 public abstract class Ability : ScriptableObject
@@ -39,7 +35,7 @@ public abstract class Ability : ScriptableObject
     public float ColdDown { get { return _coldDown; } set { _coldDown = value; } }
     public bool IsOnCoolDown { get; protected set; }
 
-    public abstract void Init(Player plater);
+    public abstract void Init(Player player);
     public abstract void UpdateAction(Player player, Transform wapon);
     public abstract void Action(Player player);
     public abstract void OnLogicAttack(Player player);

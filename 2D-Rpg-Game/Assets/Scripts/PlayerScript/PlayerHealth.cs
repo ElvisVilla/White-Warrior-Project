@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, IHealth {
@@ -23,15 +24,14 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     [SerializeField] Slider healthBar;
     float _currentHealth;
 
-    private Animator anim;
-    private Movement movement;
+    public GameObject floatingTextPrefab;
+    Player player;
     #endregion
 
     // Use this for initialization
     void Awake ()
     {
-        anim = GetComponent<Animator>();
-        movement = GetComponent<Player>().Motor;
+        player = GetComponent<Player>();
 
         _currentHealth = initialHealth;
         healthBar.maxValue = initialHealth;
@@ -43,23 +43,34 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     {
         CurrentHealth -= damage;
         healthBar.value = _currentHealth;
-        StartCoroutine(movement.OnHit());
+        StartCoroutine(player.Motor.OnHit());
 
         int animHitParameter = Random.Range(1, 3);
         switch(animHitParameter)
         {
             case 1:
-                anim.SetTrigger("TakeHit");
+                player.Anim.SetTrigger("TakeHit");
                 break;
             case 2:
-                anim.SetTrigger("TakeDamage");
+                player.Anim.SetTrigger("TakeDamage");
                 break;
         }
-        
-        if(_currentHealth <= 0 && !IsDead)
+
+        if (floatingTextPrefab != null)
+        {
+            ShowDamage(damage);
+        }
+
+        if (_currentHealth <= 0 && !IsDead)
         {
             Die();
         }
+    }
+
+    private void ShowDamage(float damage)
+    {
+        var instance = Instantiate(floatingTextPrefab, transform.position + new Vector3(0,1,0), Quaternion.identity, transform);
+        instance.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
     public void TakeHeal(float effect)
@@ -72,9 +83,8 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     public void Die()
     {
         IsDead = true;
-        anim.SetTrigger("Dying");
+        player.Anim.SetTrigger("Dying");
         Physics2D.IgnoreLayerCollision(12, 9);
-        movement.OnDead(2000f); //Aun no funciona :'V
         //Ejecutar escena GameOver.
     }
 }

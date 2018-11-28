@@ -32,7 +32,7 @@ public class CombatState : State
 
         var distance = Vector2.Distance(playerPosition, enemyPosition);
         
-        motor.CombatMovement(playerPosition, enemyPosition, distance);
+        motor.PerfomCombatMovement(playerPosition, enemyPosition, distance);
         PerformTransition(distance);
     }
 

@@ -1,32 +1,24 @@
 ﻿using UnityEngine;
+using System;
 using DG.Tweening;
+using TMPro;
+using System.Collections;
 
 public class EnemyHealth : MonoBehaviour, IHealth
 {
+    public event Func<IEnumerator> OnDamage;
+
     #region Properties
-    //public float CurrentHealth { get { return health; } private set { health = value; } }
     public bool IsDead { get; set; }
-
-    public float CurrentHealth
-    {
-        get
-        {
-            return health;
-        }
-
-        set
-        {
-            health = value;
-        }
-    }
-
+    public float CurrentHealth { get { return initialHealth; } set{ initialHealth = value; } }
     #endregion
 
     [Header("Set Health Bar")]
     [SerializeField] private int minInitialHealth = 39;
     [SerializeField] private int maxInitialHealth = 41;
-    public float health;
+    public float initialHealth;
 
+    public GameObject floatingTextPrefab;
     Animator anim;
     SpriteRenderer sprite;
     Rigidbody2D body2D;
@@ -35,11 +27,12 @@ public class EnemyHealth : MonoBehaviour, IHealth
     void Awake ()
     {
         anim = GetComponent<Animator>();
-        sprite = GetComponent<SpriteRenderer>();
         body2D = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        Physics2D.IgnoreLayerCollision(12, 9, false);
 
-        health = Random.Range(minInitialHealth, maxInitialHealth);
-        CurrentHealth = health;
+        initialHealth = UnityEngine.Random.Range(minInitialHealth, maxInitialHealth);
+        CurrentHealth = initialHealth;
 	}
 
     private void Update()
@@ -47,12 +40,22 @@ public class EnemyHealth : MonoBehaviour, IHealth
         sprite.color = Color.white;
     }
 
-    //Aplicar nockback.
     public void TakeDamage(float damageAmount)
     {
-        //Mostrar el daño aplicado en texto flotante.
-        health -= damageAmount;
+        initialHealth -= damageAmount;
         sprite.DOColor(Color.red, 0.1f);
+        StartCoroutine(OnDamage()); //Evento.
+
+        if (floatingTextPrefab != null)
+        {
+            ShowDamage(damageAmount);
+        }
+    }
+
+    private void ShowDamage(float damage)
+    {
+        var instance = Instantiate(floatingTextPrefab, transform.position + new Vector3(0,1.3f,0), Quaternion.identity, transform);
+        instance.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
     public void Die()

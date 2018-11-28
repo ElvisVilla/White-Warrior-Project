@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 [Serializable]
 public class Movement
@@ -28,6 +29,7 @@ public class Movement
     Rigidbody2D body2D;
     Animator anim;
     CharacterStats stats;
+    PlayerHealth health;
     #endregion
 
     public void Init(Player player)
@@ -36,6 +38,7 @@ public class Movement
         anim = player.Anim;
         stats = player.Stats;
         source = player.Source;
+        health = player.Health;
         joystick = GameObject.FindObjectOfType<Joystick>();
         alreadyPlayed = false;
     }
@@ -47,7 +50,7 @@ public class Movement
         
         switch (State)
         {
-            case PlayerState.OnControll:
+            case PlayerState.Control:
                 Jump();
                 switch (inputMode)
                 {
@@ -69,33 +72,28 @@ public class Movement
                         break;
                 }
                 break;
-            case PlayerState.OnInteraction:
-                deltaX = 0f;
-                break;
-            case PlayerState.OnTakeDamage:
-                deltaX = 0f;
-                break;
-            case PlayerState.OnCasting:
-                deltaX = 0f;
-                break;
-            case PlayerState.OnDead:
-                deltaX = 0f;
+            case PlayerState.NoControl:
+                anim.SetFloat("Speed", 0f);
                 break;
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            Dash(deltaX);
+
         Move(deltaX);
-        jumpImpactSoud();
+        GroundedSound();
     }
 
     void Move(float speed)
     {
         body2D.velocity = new Vector2(speed, body2D.velocity.y);
-            
+
         if (speed > 0 && !facingRight)
             Flip();
-            
+
         else if (speed < 0 && facingRight)
             Flip();
+
 
         bool falling = !grounded;
         anim.SetFloat("Speed", speed);
@@ -103,6 +101,12 @@ public class Movement
         anim.SetBool("Falling", falling);
     }
 
+
+    void Dash(float speed)
+    {
+        body2D.DOMoveX(body2D.position.x + .8f * speed, 0.15f, false);
+    }
+    
     void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -119,7 +123,7 @@ public class Movement
         }
     }
 
-    void jumpImpactSoud()
+    void GroundedSound()
     {
         if (grounded && !alreadyPlayed)
         {
@@ -156,55 +160,41 @@ public class Movement
         }
     }
 
-    public IEnumerator OnTakeDamage()
+    public void OnInteraction(bool isInteract)
     {
-        State = PlayerState.OnTakeDamage;
-        yield return new WaitForSeconds(0.3f);
-        State = PlayerState.OnControll;
-    }
-
-    public void OnInteraction(bool activation)
-    {
-        if (activation)
-        {
-            State = PlayerState.OnInteraction;
-        }
+        if (isInteract)
+            State = PlayerState.NoControl;
         else
-        {
-            State = PlayerState.OnControll;
-        }
+            State = PlayerState.Control;
     }
 
     public IEnumerator OnHit()
     {
-        State = PlayerState.OnTakeDamage;
+        State = PlayerState.NoControl;
         float knockback = (body2D.transform.localScale.x > 0) ? -1f : 1f;
-        body2D.AddForce(new Vector2(1300 * knockback, 0f));
-        yield return new WaitForSeconds(0.31f);
-        State = PlayerState.OnControll;
+        //body2D.AddForce(new Vector2(200 * knockback, 0f));
+        body2D.DOMoveX(body2D.position.x + 0.5f * knockback, 0.15f, false);
+        yield return new WaitForSeconds(0.28f);
+        if (!health.IsDead)
+        {
+            State = PlayerState.Control;
+        }
+        else
+            State = PlayerState.NoControl;
+        
     }
 
-    public IEnumerator OnCasting(float timeToControl)
-    { 
-        State = PlayerState.OnCasting;
-        yield return new WaitForSeconds(timeToControl);
-        State = PlayerState.OnControll;
-    }
-
-    public IEnumerator OnDead(float time)
+    public IEnumerator OnNoControll(float timeToControl)
     {
-        State = PlayerState.OnDead;
-        yield return new WaitForSeconds(time);
-        State = PlayerState.OnControll;
+        State = PlayerState.NoControl;
+        yield return new WaitForSeconds(timeToControl);
+        State = PlayerState.Control;
     }
 
     public enum PlayerState
     {
-        OnControll,
-        OnTakeDamage,
-        OnInteraction,
-        OnCasting,
-        OnDead,
+        Control,
+        NoControl,
     }
 
     public enum InputType

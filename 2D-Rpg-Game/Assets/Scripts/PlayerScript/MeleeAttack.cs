@@ -22,11 +22,9 @@ public class MeleeAttack : Ability
 
     public override void Action(Player player)
     {
-        //Comprobamos el cooldown, ejecutamos la animacion sin importar el efecto, la idea es aplicar el timer, resetear y establecer cooldown.
         if (_timer >= ColdDown)
         {
             player.Anim.CrossFade(AnimationName, 0f);
-            //OnLogicAttack(player);
             _timer = 0f;
             player.Stats.Speed = _minValueSpeed;
             IsOnCoolDown = true;

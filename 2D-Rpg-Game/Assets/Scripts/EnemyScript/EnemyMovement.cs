@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using DG.Tweening;
+
+public enum EnemyMovementState
+{
+    OnControl,
+    NoControl,
+}
 
 public class EnemyMovement
 {
@@ -8,8 +16,9 @@ public class EnemyMovement
     EnemyInfo enemyInfo;
     Enemy enemy;
 
+    EnemyMovementState state;
     int speedAnimatorHash = Animator.StringToHash("Speed");
-    //float variableSpeed = 0f;
+    float knockbackAmount = 25f;
 
     public EnemyMovement(Enemy enemy)
     {
@@ -19,75 +28,29 @@ public class EnemyMovement
         this.enemy = enemy;
     }
 
-    //Movimiento base para Chase y Patrol, estos 2 estados determinan hacia donde van.
-    public void PerformMovement(float speed)
+    public void PerformNormalMovement(float speed)
     {
         Move(speed);
         FlipBehaviour();
     }
 
-    //Movimiento especial para CombatState.
-    //Pendiente: Revisar las desiciones y evaluar un posible patron de estrategia.
-    public void CombatMovement(Vector2 playerPos, Vector2 enemyPos, float distance)
-    {
-        if (distance > enemyInfo.stopingDistance)
-        {
-            if (playerPos.x < enemyPos.x)
-            {
-                //enemyInfo.combatSpeed = -2.5f;
-                //enemyInfo.facingRight = true;
-                enemy.Speed = -enemyInfo.combatSpeed;
-                Move(enemy.Speed);
-                enemy.FacingRight = true;
-                
-            }
-            else if (playerPos.x > enemyPos.x)
-            {
-                //enemyInfo.combatSpeed = 2.5f;
-                //enemyInfo.facingRight = false;
-                enemy.Speed = enemyInfo.combatSpeed;
-                Move(enemy.Speed);
-                enemy.FacingRight = false;
-                
-            }
-
-            if (enemy.FacingRight)
-            {
-                enemy.gameObject.transform.eulerAngles = new Vector2(0, -180f);
-                //enemyInfo.facingRight = false;
-                enemy.FacingRight = false;
-            }
-            else
-            {
-                enemy.gameObject.transform.eulerAngles = new Vector2(0, 0);
-                //enemyInfo.facingRight = true;
-                enemy.FacingRight = true;
-            }
-        }
-        else if (distance < enemyInfo.stopingDistance || distance == 0f)
-        {
-            PerformMovement(0);
-        }
-    }
-
-    //Comportamiento de giro de sprite.
     void FlipBehaviour()
     {
         var groundInfo = Physics2D.Raycast(enemyInfo.groundDetector.position, Vector2.down, enemyInfo.rayDistance, enemyInfo.whatIsGround);
 
         if (groundInfo.collider == false)
         {
-            if (enemy.FacingRight == true) //enemyInfo.facingRight == true
+            if (enemy.FacingRight == true)
             {
                 enemy.gameObject.transform.eulerAngles = new Vector2(0, -180);
-                enemy.FacingRight = false; //enemyInfo.facingRight = false;
-                enemy.Speed = -1.2f; //enemyInfo.normalSpeed = -1.2f;
+                enemy.FacingRight = false;
+                enemy.Speed = -1.2f;
             }
             else
             {
                 enemy.gameObject.transform.eulerAngles = new Vector2(0, 0);
-                enemy.FacingRight = true; //enemyInfo.facingRight = true;
-                enemy.Speed = 1.2f; // enemyInfo.normalSpeed = 1.2f;
+                enemy.FacingRight = true;
+                enemy.Speed = 1.2f;
             }
         }
     }
@@ -96,5 +59,64 @@ public class EnemyMovement
     {
         anim.SetFloat(speedAnimatorHash, speed);
         body2D.MovePosition(body2D.position + Vector2.right * speed * Time.fixedDeltaTime);
+    }
+
+    public void PerfomCombatMovement(Vector2 playerPos, Vector2 enemyPos, float distance)
+    {
+        switch (state)
+        {
+            case EnemyMovementState.OnControl:
+                CombatMovement(playerPos, enemyPos, distance);
+                break;
+            case EnemyMovementState.NoControl:
+                anim.SetFloat(speedAnimatorHash, 0f);
+                break;
+        }
+    }
+
+    public IEnumerator OnKnockBack()
+    {
+        state = EnemyMovementState.NoControl;
+        float knockBackDirection = (body2D.transform.rotation.y == 0) ? -1f : 1f;
+        //body2D.MovePosition(body2D.position + Vector2.right * knockbackAmount * knockback * Time.fixedDeltaTime);
+        body2D.DOMoveX(body2D.position.x + 1f * knockBackDirection, 0.15f, false);
+        yield return new WaitForSeconds(0.17f);
+        state = EnemyMovementState.OnControl;
+    }
+
+    private void CombatMovement(Vector2 playerPos, Vector2 enemyPos, float distance)
+    {
+        if (distance > enemyInfo.stopingDistance)
+        {
+            if (playerPos.x < enemyPos.x)
+            {
+                enemy.Speed = -enemyInfo.combatSpeed;
+                Move(enemy.Speed);
+                enemy.FacingRight = true;
+
+            }
+            else if (playerPos.x > enemyPos.x)
+            {
+                enemy.Speed = enemyInfo.combatSpeed;
+                Move(enemy.Speed);
+                enemy.FacingRight = false;
+
+            }
+
+            if (enemy.FacingRight)
+            {
+                enemy.gameObject.transform.eulerAngles = new Vector2(0, -180f);
+                enemy.FacingRight = false;
+            }
+            else
+            {
+                enemy.gameObject.transform.eulerAngles = new Vector2(0, 0);
+                enemy.FacingRight = true;
+            }
+        }
+        else if (distance < enemyInfo.stopingDistance || distance == 0f)
+        {
+            PerformNormalMovement(0);
+        }
     }
 }

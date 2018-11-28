@@ -41,10 +41,11 @@ public class Spell : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if(ability != null)
+        if(ability != null && !player.Health.IsDead)
         {
-            //player.AnimationLogic(index);
+            player.SetAbilityToEvent(ability);
             ability.Action(player);
+
             if (ability.IsOnCoolDown)
             {
                 coolDown.fillAmount = 1f;

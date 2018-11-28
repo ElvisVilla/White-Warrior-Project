@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -13,7 +14,7 @@ public class PauseMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*
+		
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(GameIsPaused)
@@ -24,7 +25,7 @@ public class PauseMenu : MonoBehaviour {
             {
                 Pause();
             }
-        }*/
+        }
 	}
 
     public void Resume ()
@@ -41,7 +42,6 @@ public class PauseMenu : MonoBehaviour {
         Time.timeScale = 0f;
         GameIsPaused = true;
         HudPanel.SetActive(false);
-        Debug.Log(transform.name);
     }
 
     public void Options()
@@ -50,7 +50,7 @@ public class PauseMenu : MonoBehaviour {
         OptionsMenuUI.SetActive(true);
     }
 
-    public void LoadMenu (int Index)
+    public void SetScene (int Index)
     {
         Resume();
         SceneManager.LoadScene(Index);

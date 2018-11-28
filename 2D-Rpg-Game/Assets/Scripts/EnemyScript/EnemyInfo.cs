@@ -16,7 +16,7 @@ public class EnemyInfo
 
     [Header("Enemy speed")]
     public float patrolSpeed = 1.2f;
-    public float combatSpeed = 2.8f;
+    public float combatSpeed = 2.3f;
     public float chaseSpeed = 3.4f;
 
     [Header("Enemy Sight")]

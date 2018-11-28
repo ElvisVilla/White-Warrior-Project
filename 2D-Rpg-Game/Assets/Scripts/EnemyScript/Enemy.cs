@@ -4,18 +4,18 @@
 [RequireComponent(typeof(Animator))]
 public class Enemy : MonoBehaviour
 {
-    [Tooltip("Enemy Info es una clase que almacena toda la informacion que necesitan los estados para saber como actuar")]
-    [SerializeField] private EnemyInfo enemyInfo;
-
-    private StateMachine stateMachine;
+    public EnemyMovement Motor { get; private set; }
     public EnemyHealth Health { get; private set; }
     public Rigidbody2D Body2D { get; private set; }
     public Animator Anim { get; private set; }
     public EnemyInfo EnemyInfo => enemyInfo;
-    [SerializeField]private bool facingRight = true; //Nos permite cambiar la direccion inicial del enemigo.
     public bool FacingRight { get { return facingRight; } set { facingRight = value; } }
     public float Speed { get; set; }
 
+    [SerializeField]private bool facingRight = true;
+    [SerializeField] private EnemyInfo enemyInfo;
+
+    StateMachine stateMachine;
     PatrolState patrolState;
     CombatState combatState;
     ChaseState chaseState;
@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
         Anim = GetComponent<Animator>();
         Body2D = GetComponent<Rigidbody2D>();
 
+        Motor = new EnemyMovement(this);
         patrolState = new PatrolState(this);
         combatState = new CombatState(this);
         chaseState = new ChaseState(this);
@@ -44,8 +45,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        stateMachine.ExcecuteStateUpdate();
+    }
+
     private void OnEnable()
     {
+        //Damage Event.
+        Health.OnDamage += Motor.OnKnockBack;
 
         //Patrol transitions.
         patrolState.OnCombatState += CombatAction;
@@ -64,6 +72,8 @@ public class Enemy : MonoBehaviour
 
     private void OnDisable()
     {
+        Health.OnDamage -= Motor.OnKnockBack;
+
         chaseState.OnPatrolState -= PatrolAction;
         chaseState.OnCombatState -= CombatAction;
         chaseState.OnDeadState -= DeadAction;
@@ -74,11 +84,6 @@ public class Enemy : MonoBehaviour
 
         patrolState.OnCombatState -= CombatAction;
         patrolState.OnDeadState -= DeadAction;
-    }
-
-    private void FixedUpdate()
-    {
-        stateMachine.ExcecuteStateUpdate();
     }
 
     //Eventos.

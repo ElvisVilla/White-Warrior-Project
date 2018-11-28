@@ -11,6 +11,7 @@ TagManager:
   - Sword
   - WayPoints
   - 'Panel '
+  - PlayerCam
   layers:
   - Default
   - TransparentFX
