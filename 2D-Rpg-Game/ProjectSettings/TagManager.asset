@@ -12,6 +12,7 @@ TagManager:
   - WayPoints
   - 'Panel '
   - PlayerCam
+  - Post Procesing
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - EnemyAttack
   - Sword
   - Wall
-  - 
+  - Post Procesing
   - 
   - 
   - 

@@ -12,7 +12,7 @@ public class EnemyAttack : MonoBehaviour
     int _animationHash;
     float _timer;
     float _coolDown;
-    float _damage;
+    int _damage;
     bool _playerInRange;
 
     Animator anim;

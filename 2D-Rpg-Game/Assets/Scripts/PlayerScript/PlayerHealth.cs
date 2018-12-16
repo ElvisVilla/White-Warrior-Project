@@ -1,16 +1,16 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerHealth : MonoBehaviour, IHealth {
 
     #region Properties 
-    public float CurrentHealth
+    public int CurrentHealth
     {
         get { return _currentHealth; }
         set
         {
-            _currentHealth = Mathf.Clamp(_currentHealth, 0, 100);
             _currentHealth = value;
         }
     }
@@ -20,11 +20,12 @@ public class PlayerHealth : MonoBehaviour, IHealth {
 
     #region Variables
     [Header("Set in Inspector")]
-    [SerializeField] float initialHealth = 100;
-    [SerializeField] Slider healthBar;
-    float _currentHealth;
+    [SerializeField] int maxHealth = 50; //50 by default
+    [SerializeField] Slider slider;
+    [SerializeField]int _currentHealth;
 
     public GameObject floatingTextPrefab;
+    public TextMeshProUGUI healBarTextAmount;
     Player player;
     #endregion
 
@@ -32,18 +33,20 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     void Awake ()
     {
         player = GetComponent<Player>();
-
-        _currentHealth = initialHealth;
-        healthBar.maxValue = initialHealth;
-        healthBar.value = _currentHealth;
-	}
+        CurrentHealth = maxHealth;
+        slider.maxValue = maxHealth;
+        slider.value = CurrentHealth;
+        healBarTextAmount.text = healthText();
+    }
 
     //Debe aplicar nockback cuando es golpeado.
-    public void TakeDamage (float damage)
+    public void TakeDamage (int damage)
     {
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
         CurrentHealth -= damage;
-        healthBar.value = _currentHealth;
+        slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
         StartCoroutine(player.Motor.OnHit());
+        healBarTextAmount.text = healthText();
 
         int animHitParameter = Random.Range(1, 3);
         switch(animHitParameter)
@@ -61,30 +64,37 @@ public class PlayerHealth : MonoBehaviour, IHealth {
             ShowDamage(damage);
         }
 
-        if (_currentHealth <= 0 && !IsDead)
+        if (CurrentHealth <= 0 && !IsDead)
         {
             Die();
         }
     }
 
-    private void ShowDamage(float damage)
+    private void ShowDamage(int damage)
     {
         var instance = Instantiate(floatingTextPrefab, transform.position + new Vector3(0,1,0), Quaternion.identity, transform);
         instance.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
-    public void TakeHeal(float effect)
+    public void TakeHeal(int effect)
     {
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
         CurrentHealth += effect;
-        healthBar.value = CurrentHealth;
+        slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
+        healBarTextAmount.text = healthText();
     }
 
-    //De momento no la llamamos por fuera de la clase.
+    //Revisar referencias.
     public void Die()
     {
         IsDead = true;
         player.Anim.SetTrigger("Dying");
         Physics2D.IgnoreLayerCollision(12, 9);
         //Ejecutar escena GameOver.
+    }
+
+    string healthText()
+    {
+        return $"{CurrentHealth} / {maxHealth}";
     }
 }

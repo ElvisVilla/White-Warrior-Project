@@ -21,8 +21,8 @@ public class Slot : MonoBehaviour, IDropHandler
 
     public void ChangeItem(int index, GameObject droped)
     {
-        GameObject temporal = currentSpell;
-        currentSpell = droped;
+        //GameObject temporal = currentSpell;
+        //currentSpell = droped;
 
     }
 
@@ -31,5 +31,6 @@ public class Slot : MonoBehaviour, IDropHandler
         DragHandler dragHandler = null;
         dragHandler = eventData.pointerDrag.GetComponent<DragHandler>();
         dragHandler.destinationSlot = this;
+        Debug.Log(dragHandler.name);
     }
 }

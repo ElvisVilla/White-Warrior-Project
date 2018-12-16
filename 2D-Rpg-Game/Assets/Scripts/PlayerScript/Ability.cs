@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.UI;
 
-public enum AbilityMode
+public enum AbilityType
 {
     Melee,
     Range,
@@ -14,26 +15,29 @@ public abstract class Ability : ScriptableObject
     [SerializeField] protected Sprite _icon;
     [SerializeField] protected LayerMask _whatIsEnemy;
     [SerializeField] protected Color _natureColor;
-    [SerializeField] protected float _effect;
-    [SerializeField] protected float _energyConsumtion;
+    [SerializeField] protected int _minEffect;
+    [SerializeField] protected int _maxEffect;
+    [SerializeField] protected int _runeCost;
     [SerializeField] protected float _range;
     [SerializeField] protected float _coldDown;
     [SerializeField] protected float _minValueSpeed;
     [SerializeField] protected float _timeToTween;
     [SerializeField] protected string _animationName;
-    protected AbilityMode _abilityMode;
+    protected AbilityType _abilityType;
+    protected RuneController _runeController;
     protected float _timer;
 
     public Sprite Icon => _icon;
     public LayerMask WhatIsEnemy => _whatIsEnemy;
     public Color NatureColor => _natureColor;
-    public AbilityMode AbilityMode => _abilityMode;
-    public float Effect => _effect;
-    public float EnergyComsumption => _energyConsumtion;
+    public AbilityType AbilityType => _abilityType;
+    public int Effect { get; set; }
+    public int RuneCost => _runeCost;
     public string AnimationName => _animationName;
     public float Range { get { return _range; } set { _range = value; } }
-    public float ColdDown { get { return _coldDown; } set { _coldDown = value; } }
-    public bool IsOnCoolDown { get; protected set; }
+    public float CoolDownSeconds { get { return _coldDown; } set { _coldDown = value; } }
+    public bool IsCoolDown { get; protected set; }
+    public RuneController RuneController { get; protected set; }
 
     public abstract void Init(Player player);
     public abstract void UpdateAction(Player player, Transform wapon);

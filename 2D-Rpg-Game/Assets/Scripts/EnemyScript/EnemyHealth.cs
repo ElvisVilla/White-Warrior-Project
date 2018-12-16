@@ -10,41 +10,44 @@ public class EnemyHealth : MonoBehaviour, IHealth
 
     #region Properties
     public bool IsDead { get; set; }
-    public float CurrentHealth { get { return initialHealth; } set{ initialHealth = value; } }
+    public int CurrentHealth { get { return initialHealth; } set{ initialHealth = value; } }
     #endregion
 
     [Header("Set Health Bar")]
     [SerializeField] private int minInitialHealth = 39;
     [SerializeField] private int maxInitialHealth = 41;
-    public float initialHealth;
+    public int initialHealth;
 
     public GameObject floatingTextPrefab;
     Animator anim;
     SpriteRenderer sprite;
-    Rigidbody2D body2D;
+    CapsuleCollider2D coll;
 
     // Use this for initialization
     void Awake ()
     {
         anim = GetComponent<Animator>();
-        body2D = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        Physics2D.IgnoreLayerCollision(12, 9, false);
+        coll = GetComponent<CapsuleCollider2D>();
+	}
 
+    void Start()
+    {
         initialHealth = UnityEngine.Random.Range(minInitialHealth, maxInitialHealth);
         CurrentHealth = initialHealth;
-	}
+        coll.isTrigger = false;
+    }
 
     private void Update()
     {
         sprite.color = Color.white;
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount)
     {
         initialHealth -= damageAmount;
         sprite.DOColor(Color.red, 0.1f);
-        StartCoroutine(OnDamage()); //Evento.
+        StartCoroutine(OnDamage());//Evento.
 
         if (floatingTextPrefab != null)
         {
@@ -52,7 +55,7 @@ public class EnemyHealth : MonoBehaviour, IHealth
         }
     }
 
-    private void ShowDamage(float damage)
+    private void ShowDamage(int damage)
     {
         var instance = Instantiate(floatingTextPrefab, transform.position + new Vector3(0,1.3f,0), Quaternion.identity, transform);
         instance.GetComponent<TextMeshPro>().text = damage.ToString();
@@ -63,7 +66,7 @@ public class EnemyHealth : MonoBehaviour, IHealth
         IsDead = true;
         anim.CrossFade("Enemy_Die", 0f);
         sprite.DOColor(new Color(1f, 1f, 1f, 0f), 8f);
-        Physics2D.IgnoreLayerCollision(12, 9);
         Destroy(gameObject, 5.2f);
+        coll.isTrigger  = true;
     }
 }

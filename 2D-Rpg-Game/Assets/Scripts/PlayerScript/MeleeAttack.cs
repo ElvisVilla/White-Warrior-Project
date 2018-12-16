@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 
-[CreateAssetMenu(menuName = "Abilities/Melee")]
+[CreateAssetMenu(menuName = "Abilities/Melee/Basic Attack")]
 public class MeleeAttack : Ability
 {
-    Collider2D coll;
-    Vector2 weaponProjection;
+    protected Collider2D coll;
+    protected Vector2 weaponProjection;
 
     public override void Init(Player player)
     {
-        _timer = ColdDown;
-        _abilityMode = AbilityMode.Melee;
+        _timer = CoolDownSeconds;
+        _abilityType = AbilityType.Melee;
         weaponProjection = new Vector2(Range, 1f);
+        RuneController = FindObjectOfType<RuneController>();
     }
 
     public override void UpdateAction(Player player, Transform weapon)
@@ -22,16 +23,16 @@ public class MeleeAttack : Ability
 
     public override void Action(Player player)
     {
-        if (_timer >= ColdDown)
+        if (_timer >= CoolDownSeconds)
         {
             player.Anim.CrossFade(AnimationName, 0f);
             _timer = 0f;
             player.Stats.Speed = _minValueSpeed;
-            IsOnCoolDown = true;
+            IsCoolDown = true;
             DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);
         }
         else
-            IsOnCoolDown = false;
+            IsCoolDown = false;
     }
 
     public override void OnLogicAttack(Player player)
@@ -41,9 +42,12 @@ public class MeleeAttack : Ability
             EnemyHealth health = coll.transform.GetComponent<EnemyHealth>();
             if (health != null && health.CurrentHealth >= 1f)
             {
-                float damage = Effect;
-                health.TakeDamage(damage);
+                int randomDamage = Random.Range(_minEffect, _maxEffect);
+                health.TakeDamage(randomDamage);
                 player.StartCoroutine(player.Motor.OnHit());
+                player.StartCoroutine(player.CameraManager.OnAbilityEffect(_abilityType));
+                //player.ParticlesController.HitInstantiate(1f, player.Combat.weapon.localPosition);
+                RuneController.ChargeRune();
             }
         }
     }

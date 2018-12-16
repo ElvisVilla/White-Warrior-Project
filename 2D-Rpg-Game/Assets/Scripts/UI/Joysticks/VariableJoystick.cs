@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class VariableJoystick : Joystick
 {
     [Header("Variable Joystick Options")]
-    public bool isFixed = false;
+    public bool isFixed = true;
     public Vector2 fixedScreenPosition;
 
     Vector2 joystickCenter = Vector2.zero;

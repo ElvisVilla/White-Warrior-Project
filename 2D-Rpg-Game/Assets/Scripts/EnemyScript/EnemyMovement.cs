@@ -18,7 +18,8 @@ public class EnemyMovement
 
     EnemyMovementState state;
     int speedAnimatorHash = Animator.StringToHash("Speed");
-    float knockbackAmount = 25f;
+    float knockbackAmount = 1f;
+    float KnockbackTime = 0.06f;
 
     public EnemyMovement(Enemy enemy)
     {
@@ -78,9 +79,8 @@ public class EnemyMovement
     {
         state = EnemyMovementState.NoControl;
         float knockBackDirection = (body2D.transform.rotation.y == 0) ? -1f : 1f;
-        //body2D.MovePosition(body2D.position + Vector2.right * knockbackAmount * knockback * Time.fixedDeltaTime);
-        body2D.DOMoveX(body2D.position.x + 1f * knockBackDirection, 0.15f, false);
-        yield return new WaitForSeconds(0.17f);
+        body2D.DOMoveX(body2D.position.x + knockbackAmount * knockBackDirection, KnockbackTime, false);
+        yield return new WaitForSeconds(0.3f);
         state = EnemyMovementState.OnControl;
     }
 

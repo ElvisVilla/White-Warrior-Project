@@ -30,7 +30,6 @@ public class CombatActions
             if (abilities[i] != null)
                 abilities[i].UpdateAction(player, weapon);
         }
-
     }
 
     public Ability GetAbilities(int index)

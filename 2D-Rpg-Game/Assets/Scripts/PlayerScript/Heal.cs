@@ -1,55 +1,47 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Abilities/Heal")]
 public class Heal : Ability
 {
-    [SerializeField] protected float timeToCast;
     [SerializeField] protected float timeToMove;
-    [SerializeField] protected float timerCast;
-    bool abilityPress = false;
+    Vector3 actualPosition;
 
     public override void Init(Player player)
     {
-        _timer = ColdDown;
-        _abilityMode = AbilityMode.Magic;
+        _timer = CoolDownSeconds;
+        _abilityType = AbilityType.Magic;
+        RuneController = FindObjectOfType<RuneController>();
     }
 
     public override void UpdateAction(Player player, Transform wapon)
-    {
+    {       
         _timer += Time.deltaTime;
-        if (abilityPress)
-        {
-            while (timerCast <= timeToCast)
-            {
-                timerCast += Time.deltaTime;
-            }
-        }
     }
 
     public override void Action(Player player)
     {
-        if (_timer >= ColdDown)
+        if (_timer >= CoolDownSeconds && RuneController.GotRunes(RuneCost))
         {
             player.Anim.CrossFade(AnimationName, 0f);
-            _timer = 0f;
             OnLogicAttack(player);
-            player.Stats.Speed = _minValueSpeed;
-            IsOnCoolDown = true;
-            DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);
+            IsCoolDown = true;
+            player.StartCoroutine(player.CameraManager.OnAbilityEffect(_abilityType));
+            _timer = 0f;
+            RuneController.UseRunes(RuneCost);
         }
         else
-            IsOnCoolDown = false;
+            IsCoolDown = false;    
     }
 
     public override void OnLogicAttack(Player player)
     {
-        player.StartCoroutine(player.Motor.OnNoControll(timeToMove));
-        if (timerCast >= timeToCast)
-        {
-            PlayerHealth health = player.gameObject.GetComponent<PlayerHealth>();
-            health.TakeHeal(Effect);
-            timerCast = 0f;
-        }
+        //al aplicar la curacion evitaremos que el jugador se mueva durante unos segundos.
+        player.StartCoroutine(player.Motor.OnNonControl(0.25f));
+        player.ParticlesController.HealInstantiate(4.5f);
+        Effect = Random.Range(_minEffect, _maxEffect);
+        player.Health.TakeHeal(Effect);
     }
 }

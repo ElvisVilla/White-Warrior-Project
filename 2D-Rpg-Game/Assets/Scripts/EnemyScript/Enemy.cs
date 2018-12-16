@@ -2,6 +2,7 @@
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyHealth))]
 public class Enemy : MonoBehaviour
 {
     public EnemyMovement Motor { get; private set; }
@@ -50,58 +51,99 @@ public class Enemy : MonoBehaviour
         stateMachine.ExcecuteStateUpdate();
     }
 
+    #region ActionMethods
+    void PatrolAction()
+    {
+        stateMachine.ChangeState(patrolState);
+    }
+
+    void CombatAction()
+    {
+        stateMachine.ChangeState(combatState);
+    }
+
+    void ChaseAction()
+    {
+        stateMachine.ChangeState(chaseState);
+    }
+
+    void DeadAction()
+    {
+        stateMachine.ChangeState(deadState);
+    }
+    #endregion
+
+    #region EventSubscriptions
+    private void SetAllPatrolEvents()
+    {
+        patrolState.OnCombatState += CombatAction;
+        patrolState.OnDeadState += DeadAction;
+    }
+
+    private void SetAllCombatEvents()
+    {
+        combatState.OnChaseState += ChaseAction;
+        combatState.OnPatrolState += PatrolAction;
+        combatState.OnDeadState += DeadAction;
+    }
+
+    private void SetAllChaseEvents()
+    {
+        chaseState.OnPatrolState += PatrolAction;
+        chaseState.OnCombatState += CombatAction;
+        chaseState.OnDeadState += DeadAction;
+    }
+
     private void OnEnable()
     {
         //Damage Event.
         Health.OnDamage += Motor.OnKnockBack;
 
-        //Patrol transitions.
-        patrolState.OnCombatState += CombatAction;
-        patrolState.OnDeadState += DeadAction;
+        //Patrol events.
+        SetAllPatrolEvents();
 
-        //Combat transitions.
-        combatState.OnChaseState += ChaseAction;
-        combatState.OnPatrolState += PatrolAction;
-        combatState.OnDeadState += DeadAction;
+        //Combat events.
+        SetAllCombatEvents();
 
-        //Chase transitions.
-        chaseState.OnPatrolState += PatrolAction;
-        chaseState.OnCombatState += CombatAction;
-        chaseState.OnDeadState += DeadAction;
+        //Chase events.
+        SetAllChaseEvents();
+
+    }
+    #endregion
+
+    #region UnsubscribeEvents
+    private void UnsubscribePatrolEvents()
+    {
+        patrolState.OnCombatState -= CombatAction;
+        patrolState.OnDeadState -= DeadAction;
+    }
+
+    public void UnsubscribeCombatevents()
+    {
+        combatState.OnChaseState -= ChaseAction;
+        combatState.OnPatrolState -= PatrolAction;
+        combatState.OnDeadState -= DeadAction;
+    }
+
+    public void UnsubscribeChaseEvents()
+    {
+        chaseState.OnPatrolState -= PatrolAction;
+        chaseState.OnCombatState -= CombatAction;
+        chaseState.OnDeadState -= DeadAction;
     }
 
     private void OnDisable()
     {
         Health.OnDamage -= Motor.OnKnockBack;
 
-        chaseState.OnPatrolState -= PatrolAction;
-        chaseState.OnCombatState -= CombatAction;
-        chaseState.OnDeadState -= DeadAction;
+        //Patrol events.
+        UnsubscribePatrolEvents();
 
-        combatState.OnChaseState -= ChaseAction;
-        combatState.OnPatrolState -= PatrolAction;
-        combatState.OnDeadState -= DeadAction;
+        //Combat events.
+        UnsubscribeCombatevents();
 
-        patrolState.OnCombatState -= CombatAction;
-        patrolState.OnDeadState -= DeadAction;
+        //Chase events.
+        UnsubscribeChaseEvents();
     }
-
-    //Eventos.
-    #region EventMethods 
-
-    void PatrolAction() => stateMachine.ChangeState(patrolState);
-
-    void CombatAction() => stateMachine.ChangeState(combatState);
-
-    void ChaseAction() => stateMachine.ChangeState(chaseState);
-
-    void DeadAction() => stateMachine.ChangeState(deadState);
-    
     #endregion
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, enemyInfo.patrolRange);
-    }
 }

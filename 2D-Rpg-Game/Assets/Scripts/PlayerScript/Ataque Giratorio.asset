@@ -16,10 +16,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   _natureColor: {r: 1, g: 1, b: 1, a: 1}
-  _effect: 3
-  _energyConsumtion: 2
+  _minEffect: 3
+  _maxEffect: 6
+  _runeCost: 0
   _range: 2
-  _coldDown: 5
-  _minValueSpeed: 6
-  _timeToTween: 1.2
+  _coldDown: 2
+  _minValueSpeed: 13
+  _timeToTween: 0.8
   _animationName: AtaqueGiratorio_warrior

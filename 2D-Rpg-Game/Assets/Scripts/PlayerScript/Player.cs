@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using Cinemachine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioSource))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Movement motor;
@@ -14,11 +16,10 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
     public AudioSource Source { get; private set; }
     public Rigidbody2D Body2D { get; private set; }
+    public CameraManager CameraManager { get; private set; }
+    public ParticlesController ParticlesController { get; private set; }
 
-    CinemachineVirtualCamera CinemachineVirtualCam;
-    CinemachineBasicMultiChannelPerlin virtualCamNoise;
     Ability ability;
-    float timer;
 
     private void Awake()
     {
@@ -26,11 +27,9 @@ public class Player : MonoBehaviour
         Anim = GetComponent<Animator>();
         Body2D = GetComponent<Rigidbody2D>();
         Source = GetComponent<AudioSource>();
+        CameraManager = FindObjectOfType<CameraManager>();
+        ParticlesController = GetComponent<ParticlesController>();
 
-        CinemachineVirtualCam = GameObject.FindGameObjectWithTag("PlayerCam").GetComponent<CinemachineVirtualCamera>();
-        virtualCamNoise = CinemachineVirtualCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
-        timer = 1f;
         if (stats != null)
         {
             motor.Init(this);
@@ -43,28 +42,13 @@ public class Player : MonoBehaviour
         //Actualizar los componentes
         motor.MovementUpdate(this);
         combat.CombatActionsUpdate(this);
-
-        timer += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            timer = 0;
-        }
-
-        if (timer < 0.8f)
-        {
-            virtualCamNoise.m_AmplitudeGain = 1.2f;
-            virtualCamNoise.m_FrequencyGain = 2f;
-        }
-        else
-        {
-            virtualCamNoise.m_AmplitudeGain = 0f;
-        }
     }
 
     public void PerformJump()
     {
         if(!Health.IsDead)
-            motor.JumpForTactil();
+            motor.JactileJump();
+        ParticlesController.DustLandInstantiate(1f);
     }
 
     //Aca llamaremos la logica de la animacion de ataques fisicos.

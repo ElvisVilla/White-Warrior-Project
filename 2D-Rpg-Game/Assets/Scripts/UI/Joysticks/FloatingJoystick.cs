@@ -7,7 +7,7 @@ public class FloatingJoystick : Joystick
 
     void Start()
     {
-        background.gameObject.SetActive(active);
+        background.gameObject.SetActive(false);
     }
 
     public override void OnDrag(PointerEventData eventData)

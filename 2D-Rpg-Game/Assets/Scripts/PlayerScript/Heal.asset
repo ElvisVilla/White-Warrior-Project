@@ -16,13 +16,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32768
   _natureColor: {r: 0, g: 0.6420536, b: 1, a: 1}
-  _effect: 6
-  _energyConsumtion: 4
+  _minEffect: 8
+  _maxEffect: 11
+  _runeCost: 1
   _range: 2
-  _coldDown: 10
+  _coldDown: 3
   _minValueSpeed: 0
   _timeToTween: 1
-  _animationName: 
-  timeToCast: 0
-  timeToMove: 0
-  timerCast: 0
+  _animationName: Heal
+  timeToMove: 1.5

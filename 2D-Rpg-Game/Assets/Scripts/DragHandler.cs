@@ -9,11 +9,11 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private SpellBar spellbar;
     private Slot originalSlot;
     public Slot destinationSlot;
-    //private Image ownImage;
+    private Image ownImage;
 
     private void Start()
     {
-        //ownImage = GetComponent<Image>();
+        ownImage = GetComponent<Image>();
         canvas = transform.parent.parent.parent;
         startingPosition = transform;
     }
@@ -24,8 +24,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         originalSlot = transform.GetComponentInParent<Slot>();
         transform.SetParent(canvas);
         transform.position = eventData.position;
-        //ownImage.raycastTarget = false;
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
+        ownImage.raycastTarget = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -35,7 +34,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        GetComponentInChildren<CanvasGroup>().blocksRaycasts = true;
+        ownImage.raycastTarget = false;
 
         if (destinationSlot != null)
         {

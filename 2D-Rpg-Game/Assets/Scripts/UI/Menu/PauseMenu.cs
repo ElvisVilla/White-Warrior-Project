@@ -11,9 +11,14 @@ public class PauseMenu : MonoBehaviour {
     public GameObject PauseMenuUI;
     public GameObject OptionsMenuUI;
     public GameObject HudPanel;
-	
-	// Update is called once per frame
-	void Update () {
+    Player player;
+
+    private void Start()
+    {
+        player = FindObjectOfType<Player>();
+    }
+    // Update is called once per frame
+    void Update () {
 		
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -59,6 +64,22 @@ public class PauseMenu : MonoBehaviour {
     public void SetMainMenu (int index)
     {
         SceneManager.LoadScene(index);
+    }
+
+    public void SetMobile()
+    {
+        if(player.Motor.inputMode == Movement.InputType.Teclado)
+        {
+            player.Motor.inputMode = Movement.InputType.Joystick;
+        }
+    }
+
+    public void SetKeyword()
+    {
+        if (player.Motor.inputMode == Movement.InputType.Joystick)
+        {
+            player.Motor.inputMode = Movement.InputType.Teclado;
+        }
     }
 }   
 

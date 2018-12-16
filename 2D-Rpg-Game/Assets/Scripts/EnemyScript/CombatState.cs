@@ -29,7 +29,6 @@ public class CombatState : State
             playerPosition = hitInfo.transform.position;
             enemyInfo.PlayerReference = hitInfo.gameObject;
         }
-
         var distance = Vector2.Distance(playerPosition, enemyPosition);
         
         motor.PerfomCombatMovement(playerPosition, enemyPosition, distance);

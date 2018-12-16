@@ -16,10 +16,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   _natureColor: {r: 1, g: 1, b: 1, a: 1}
-  _effect: 4
-  _energyConsumtion: 3
+  _minEffect: 1
+  _maxEffect: 3
+  _runeCost: 0
   _range: 1.5
   _coldDown: 0.6
-  _minValueSpeed: 2.3
+  _minValueSpeed: 3
   _timeToTween: 0.6
   _animationName: GolpeBasico
