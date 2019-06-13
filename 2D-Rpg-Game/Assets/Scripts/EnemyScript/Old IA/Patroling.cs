@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-public class PatrolState : State
+public class Patroling : State
 {
     public event Action OnCombatState;
     public event Action OnDeadState;
     PlayerHealth playerHealth;
 
-    public PatrolState(Enemy enemy) : base(enemy)
+    public Patroling(Enemy enemy) : base(enemy)
     {
     }
 

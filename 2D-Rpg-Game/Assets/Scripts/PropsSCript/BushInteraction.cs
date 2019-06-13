@@ -20,6 +20,8 @@ public class BushInteraction : MonoBehaviour
     Animator anim;
     SpriteRenderer sprite;
     AudioSource source;
+    int? sortingOrder = null;
+    bool isFaded = false;
 
     void Awake()
     {
@@ -39,11 +41,14 @@ public class BushInteraction : MonoBehaviour
     {
         if (hitInfo != null)
         {
-            int sortingOrder = hitInfo.GetComponent<SpriteRenderer>().sortingOrder;
-
-            if (sortingOrder < sprite.sortingOrder)
+            if(sortingOrder == null)
             {
-                sprite.DOFade(0.6f, 0.7f);
+                sortingOrder = hitInfo.GetComponent<SpriteRenderer>().sortingOrder;
+                if (sortingOrder < sprite.sortingOrder && isFaded == false)
+                {
+                    sprite.DOFade(0.6f, 0.7f);
+                    isFaded = true;
+                }
             }
 
             anim.SetTrigger(animID);
@@ -57,7 +62,12 @@ public class BushInteraction : MonoBehaviour
         else
         {
             alreadyPlayed = false;
-            sprite.DOFade(1f, 0.4f);
+            sortingOrder = null;
+            if (isFaded)
+            {
+                sprite.DOFade(1f, 0.4f);
+                isFaded = false;
+            }            
         }
     }
 

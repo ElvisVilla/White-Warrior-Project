@@ -46,7 +46,8 @@ public class EnemyHealth : MonoBehaviour, IHealth
     public void TakeDamage(int damageAmount)
     {
         initialHealth -= damageAmount;
-        sprite.DOColor(Color.red, 0.1f);
+        if(CurrentHealth > 4)
+            sprite.DOColor(Color.red, 0.1f);
         StartCoroutine(OnDamage());//Evento.
 
         if (floatingTextPrefab != null)

@@ -16,11 +16,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]private bool facingRight = true;
     [SerializeField] private EnemyInfo enemyInfo;
 
-    StateMachine stateMachine;
-    PatrolState patrolState;
+    //StateMachine stateMachine;
+    /*PatrolState patrolState;
     CombatState combatState;
     ChaseState chaseState;
-    DeadState deadState;
+    DeadState deadState;*/
 
     private void Awake()
     {
@@ -29,13 +29,13 @@ public class Enemy : MonoBehaviour
         Body2D = GetComponent<Rigidbody2D>();
 
         Motor = new EnemyMovement(this);
-        patrolState = new PatrolState(this);
+        /*patrolState = new PatrolState(this);
         combatState = new CombatState(this);
         chaseState = new ChaseState(this);
-        deadState = new DeadState(this);
+        deadState = new DeadState(this);*/
 
-        stateMachine = new StateMachine();
-        stateMachine.ChangeState(patrolState);        
+        //stateMachine = new StateMachine();
+        //stateMachine.SetState(patrolState);        
 
         if(FacingRight)
         {
@@ -48,28 +48,28 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        stateMachine.ExcecuteStateUpdate();
+        //stateMachine.ExcecuteStateUpdate();
     }
 
-    #region ActionMethods
+    /*#region ActionMethods
     void PatrolAction()
     {
-        stateMachine.ChangeState(patrolState);
+        stateMachine.SetState(patrolState);
     }
 
     void CombatAction()
     {
-        stateMachine.ChangeState(combatState);
+        stateMachine.SetState(combatState);
     }
 
     void ChaseAction()
     {
-        stateMachine.ChangeState(chaseState);
+        stateMachine.SetState(chaseState);
     }
 
     void DeadAction()
     {
-        stateMachine.ChangeState(deadState);
+        stateMachine.SetState(deadState);
     }
     #endregion
 
@@ -145,5 +145,5 @@ public class Enemy : MonoBehaviour
         //Chase events.
         UnsubscribeChaseEvents();
     }
-    #endregion
+    #endregion*/
 }
