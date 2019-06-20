@@ -105,7 +105,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -707718357
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 697d11b9a4ea0d148bc92512de103f3d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -202,15 +202,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf1de3ed250ab044a911b9d932a2b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_initialStateType: 0
-  m_facingMode: 0
+  m_initialStateType: 1
+  m_facingSide: 0
   m_stateList:
-  - {fileID: 11400000, guid: df77104303873c84fadd8fad7996096c, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  m_transition:
-    sensor:
-      sensorDimensions: {x: 0, y: 0}
+  - {fileID: 11400000, guid: 3c5a2c591434dc74db7382761b3651c7, type: 2}
+  - {fileID: 11400000, guid: 517644c15a0017e43ba51e2017181d92, type: 2}
+  m_sensor:
+    sensorDimensions: {x: 12, y: 8}
+    currentState: {fileID: 0}
+    whatIsPlayer:
+      serializedVersion: 2
+      m_Bits: 512
+    targetReference: {fileID: 0}
 --- !u!1 &1171009639868898
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ public class Patroling : State
     private void PerformTransition(Collider2D hitInfo)
     {
         if (playerHealth == null && hitInfo != null)
-            playerHealth = hitInfo.transform.GetComponent<PlayerHealth>();
+            playerHealth = hitInfo.GetComponent<PlayerHealth>();
 
         if (hitInfo != null && playerHealth.CurrentHealth > 0)
             OnCombatState();

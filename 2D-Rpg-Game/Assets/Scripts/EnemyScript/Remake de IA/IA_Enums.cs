@@ -1,6 +1,6 @@
 ﻿namespace Bissash.IA
 {
-    public enum FacingMode
+    public enum SideMode
     {
         Right,
         Left,

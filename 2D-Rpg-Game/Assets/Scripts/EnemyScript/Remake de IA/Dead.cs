@@ -21,6 +21,11 @@ namespace Bissash.IA
         {
             throw new System.NotImplementedException();
         }
+
+        public override void Transitions(IABrain brain)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

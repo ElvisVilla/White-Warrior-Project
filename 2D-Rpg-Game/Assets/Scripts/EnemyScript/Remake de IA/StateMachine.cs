@@ -9,10 +9,11 @@ namespace Bissash.IA
         private BaseState currentlyRunningState;
         private BaseState previousState;
 
+        public BaseState CurrentState => currentlyRunningState;
+
         public void SetInitialState(BaseState state, IABrain brain)
         {
-            if (currentlyRunningState != null)
-                currentlyRunningState.Exit(brain);
+            currentlyRunningState?.Exit(brain);
 
             previousState = currentlyRunningState;
             currentlyRunningState = state;
@@ -22,8 +23,7 @@ namespace Bissash.IA
         public void ExcecuteStateUpdate(IABrain brain)
         {
             var runningState = currentlyRunningState;
-            if (runningState != null)
-                runningState.Excecute(brain);
+            runningState?.Excecute(brain);
         }
     }
 }

@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour, IHealth {
     [Header("Set in Inspector")]
     [SerializeField] int maxHealth = 50; //50 by default
     [SerializeField] Slider slider;
-    [SerializeField]int _currentHealth;
+    [SerializeField] int _currentHealth;
 
     public GameObject floatingTextPrefab;
     public TextMeshProUGUI healBarTextAmount;
@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         CurrentHealth = maxHealth;
         slider.maxValue = maxHealth;
         slider.value = CurrentHealth;
-        healBarTextAmount.text = healthText();
+        healBarTextAmount.text = HealthText();
     }
 
     //Debe aplicar nockback cuando es golpeado.
@@ -46,7 +46,7 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         CurrentHealth -= damage;
         slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
         StartCoroutine(player.Motor.OnHit());
-        healBarTextAmount.text = healthText();
+        healBarTextAmount.text = HealthText();
 
         int animHitParameter = Random.Range(1, 3);
         switch(animHitParameter)
@@ -81,7 +81,7 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, maxHealth);
         CurrentHealth += effect;
         slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
-        healBarTextAmount.text = healthText();
+        healBarTextAmount.text = HealthText();
     }
 
     //Revisar referencias.
@@ -93,7 +93,7 @@ public class PlayerHealth : MonoBehaviour, IHealth {
         //Ejecutar escena GameOver.
     }
 
-    string healthText()
+    string HealthText()
     {
         return $"{CurrentHealth} / {maxHealth}";
     }
