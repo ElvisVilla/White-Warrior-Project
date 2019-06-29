@@ -1,67 +1,87 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using Bissash.Util;
 
 namespace Bissash.IA
 {
     [CreateAssetMenu(menuName = "IA/Behaviour/SoldierPatrolBehaviour")]
     public class SoldierPatrolBehaviour : BaseBehaviour
     {
+        [Header("Debug values")]
         [SerializeField]Vector3 m_direction;
         [SerializeField]Vector3 initialPos;
-        [SerializeField]Vector3 actualPos;
-        [SerializeField]float distanceBetweenInitialPos;
+        [SerializeField]float initialPositionDistance;
+        Timer waitTimer;
+
+        //Variables for wait behaviour.
+        float initialSpeed;
+        Timer timer;
+        bool canMove;
 
         public override void Init(IABrain brain, PatrolState state)
         {
-            OrientationUpdate(brain);
+            OrientationUpdate(brain, state);
             initialPos = brain.transform.position;
-            brain.initialPosition = initialPos; //Test
+            initialSpeed = state.StatesValues.MovementSpeed;
+
+            timer = new Timer();
+            waitTimer = new Timer();
         }
 
         public override void BehaviourExcecute(IABrain brain, PatrolState state)
         {
-            OrientationUpdate(brain);
-            brain.Anim.SetFloat("Speed", state.StatesValues.MovementSpeed);
-
-            var hitInfo = Physics2D.Raycast(brain.transform.GetChild(1).position, Vector2.down, 1f,
-                state.StatesValues.whatIsFloor);
-
-            if (brain.m_facingSide == SideMode.Left)
-            {
-                Move(brain, -state.StatesValues.MovementSpeed, hitInfo, SideMode.Right);
-            }
-            else if (brain.m_facingSide == SideMode.Right)
-            {
-                Move(brain, state.StatesValues.MovementSpeed, hitInfo, SideMode.Left);
-            }
-
-            actualPos = brain.transform.position;
-            brain.actualPosition = actualPos; //Test
-            distanceBetweenInitialPos = Vector3.Distance(initialPos, actualPos);
-            brain.distance = distanceBetweenInitialPos; //Test*/
-            brain.playerPos = brain.Sensor.TargetPosition;
-
-
-            //EL estado de patrol debe moverse desde su punto inicial a 10mts dividido entre ambas
-            //Direcciones, al llegar al limite de un lado debera cambiar direccion.
-            //Tambien debemos comprobar que exista tierra para poder avanzar.
+            Move(brain, state);
+            initialPositionDistance = brain.Sensor.MeasureDistance(initialPos, brain.Position);
         }
 
-        void OrientationUpdate(IABrain brain)
+        void OrientationUpdate(IABrain brain, PatrolState state)
         {
-            m_direction = (brain.m_facingSide == SideMode.Left) ? Vector3.up * -180f : Vector3.zero;
+            m_direction = brain.IsFacingSide(SideMode.Left) ? Vector3.up * 180f : Vector3.zero;
             brain.transform.localEulerAngles = m_direction;
         }
 
-        void Move(IABrain brain, float speed, RaycastHit2D collisionInfo, SideMode side)
+        void PatrolRotation(IABrain brain, PatrolState state, float waitForRotation)
         {
-            brain.Body2D.MovePosition(brain.Body2D.position +
-                Vector2.right * speed * Time.fixedDeltaTime);
+            //this avoid rotation always that is in max distance between initial position.
+            bool canRotate = timer.IsTimeCompleted(waitForRotation, TimeMode.LessEqualsMode);
 
-            if (collisionInfo.collider == null)
+            if (initialPositionDistance > state.StatesValues.Range && brain.IsFacingSide(SideMode.Left) && canRotate)
             {
-                brain.m_facingSide = side;
+                brain.SetFacingSide(SideMode.Right);
             }
+            else if (initialPositionDistance > state.StatesValues.Range && brain.IsFacingSide(SideMode.Right) && canRotate)
+            {
+                brain.SetFacingSide(SideMode.Left);
+            }
+        }
+
+        void Move(IABrain brain, PatrolState state)
+        {
+            OrientationUpdate(brain, state);
+            PatrolRotation(brain, state, 1f);
+
+            float speed = brain.IsFacingSide(SideMode.Right) ? state.StatesValues.MovementSpeed : -state.StatesValues.MovementSpeed;
+            brain.Anim.SetFloat("Speed", speed);
+            brain.Body2D.MovePosition(brain.Body2D.position + Vector2.right * speed * Time.fixedDeltaTime);
+            brain.Sensor.DetectedEvent(RotateWhenNoFloor, brain, state.StatesValues.whatIsFloor);
+
+            //Testeandose aun.
+            waitTimer.OnTimerEvent(RandomWait, state, Random.Range(2f, 8f), TimeMode.LessEqualsMode); 
+        }
+
+        void RotateWhenNoFloor(IABrain brain)
+        {
+            if (brain.IsFacingSide(SideMode.Right))
+                brain.SetFacingSide(SideMode.Left);
+            else if (brain.IsFacingSide(SideMode.Left))
+                brain.SetFacingSide(SideMode.Right);
+        }
+
+        //Falta trabajarlo un poco mas.
+        void RandomWait(PatrolState state)
+        {
+            canMove = !canMove;
+            state.StatesValues.MovementSpeed = (canMove) ? initialSpeed : 0f;
         }
     }
 }

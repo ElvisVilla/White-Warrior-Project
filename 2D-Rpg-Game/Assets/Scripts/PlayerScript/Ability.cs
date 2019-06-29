@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using UnityEngine.UI;
+using Bissash.Util;
 
 public enum AbilityType
 {
@@ -25,7 +25,7 @@ public abstract class Ability : ScriptableObject
     [SerializeField] protected string _animationName;
     protected AbilityType _abilityType;
     protected RuneController _runeController;
-    protected float _timer;
+    protected Timer m_timer;
 
     public Sprite Icon => _icon;
     public LayerMask WhatIsEnemy => _whatIsEnemy;

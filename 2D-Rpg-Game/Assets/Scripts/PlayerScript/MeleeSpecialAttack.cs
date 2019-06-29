@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Abilities/Melee/Special Attack")]
 public class MeleeSpecialAttack: MeleeAttack {
@@ -20,10 +17,10 @@ public class MeleeSpecialAttack: MeleeAttack {
     public override void Action(Player player)
     {
         //base.Action(player);
-        if (_timer >= CoolDownSeconds && RuneController.GotRunes(RuneCost)) //Los ataques especiales requieren comprobar la cantidad de runas.
+        if (m_timer.ElapsedSeconds() >= CoolDownSeconds && RuneController.GotRunes(RuneCost)) //Los ataques especiales requieren comprobar la cantidad de runas.
         {
             player.Anim.CrossFade(AnimationName, 0f);
-            _timer = 0f;
+            m_timer.ResetTimer();
             player.Stats.Speed = _minValueSpeed;
             IsCoolDown = true;
             DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);

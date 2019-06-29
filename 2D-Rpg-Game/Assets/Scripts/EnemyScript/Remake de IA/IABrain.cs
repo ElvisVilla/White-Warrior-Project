@@ -8,13 +8,10 @@ namespace Bissash.IA
     public class IABrain : MonoBehaviour
     {
         [SerializeField] private StateType m_initialStateType = StateType.Indefined;
-        [SerializeField] public SideMode m_facingSide;
+        [SerializeField] public SideMode facingSide;
         [SerializeField] private List<BaseState> m_stateList;
         [SerializeField] Sensor m_sensor;
-        public Vector3 initialPosition;
-        public Vector3 actualPosition;
-        public float distance;
-        public Vector3 playerPos;
+        //[SerializeField] float distance;
 
         #region Properties
         public Animator Anim { get; private set; }
@@ -22,11 +19,9 @@ namespace Bissash.IA
         public EnemyHealth Health { get; private set; }
         public StateMachine StateMachine { get; private set; }
         public Sensor Sensor => m_sensor;
-        public List<BaseState> StateList => m_stateList;
         public Vector3 Position => Body2D.position;
         #endregion
 
-        // Start is called before the first frame update
         void Awake()
         {
             Anim = GetComponent<Animator>();
@@ -39,17 +34,12 @@ namespace Bissash.IA
         void Start()
         {
             SetState(m_initialStateType);
-            //initialPosition = transform.position;
         }
 
-        // Update is called once per frame
         void FixedUpdate()
         {
             StateMachine.ExcecuteStateUpdate(this);
             Sensor.Update(this);
-            /*actualPosition = transform.position;
-            distance = Vector3.Distance(initialPosition, actualPosition);*/
-            //playerPos = Sensor.TargetPosition;
         }
 
         public void SetState(StateType stateType)
@@ -58,10 +48,28 @@ namespace Bissash.IA
             state: m_stateList.Find(state => state.StatesValues.StateType == stateType));
         }
 
+        public SideMode GetFacingSide()
+        {
+            return facingSide;
+        }
+
+        public void SetFacingSide(SideMode side)
+        {
+            facingSide = side;
+        }
+
+        public bool IsFacingSide(SideMode side)
+        {
+            if (facingSide == side)
+                return true;
+
+            return false;
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(transform.position, Sensor.sensorDimensions);
+            Gizmos.DrawWireCube(transform.position, Sensor.Dimention);
         }
     }
 }

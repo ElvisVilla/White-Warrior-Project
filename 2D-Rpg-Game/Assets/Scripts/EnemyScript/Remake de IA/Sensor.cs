@@ -8,11 +8,13 @@ namespace Bissash.IA
     {
         public event Action<IABrain> StartCombat = delegate { };
 
-        public Vector2 sensorDimensions;
-        [SerializeField] private BaseState currentState;
-        [SerializeField] private LayerMask whatIsPlayer;
-        [SerializeField] private Player targetReference;
         private IABrain brain;
+        [SerializeField] private Vector2 sensorDimention;
+        [SerializeField] private LayerMask whatIsPlayer;
+
+        [Header("Debug values")]
+        [SerializeField] private BaseState currentState;
+        [SerializeField] private Player targetReference;
 
         public Player Target => targetReference;
         public Vector3 TargetPosition 
@@ -26,7 +28,8 @@ namespace Bissash.IA
                 else return Vector3.zero;
             }
         }
-        public float TargetDistance => (TargetPosition - brain.Position).sqrMagnitude;
+        public float TargetDistance => (TargetPosition - brain.Position).sqrMagnitude; //Por testear.
+        public Vector2 Dimention => sensorDimention;
 
         public void Init(IABrain brain)
         {
@@ -37,14 +40,14 @@ namespace Bissash.IA
         {
             this.brain = brain;
             currentState = brain.StateMachine.CurrentState;
-            currentState.Transitions(brain); //Aun por definir.
+            currentState.Transitions(brain); //Aun por definir la logica y el lugar de transicion.
 
-            Collider2D coll = Detected(brain);
+            Collider2D coll = Detecting(brain);
             SetPlayerReference(coll);
 
             if(coll != null && currentState is PatrolState)
             {
-                StartCombat?.Invoke(brain); 
+                //StartCombat?.Invoke(brain); 
             }
         }
 
@@ -60,9 +63,22 @@ namespace Bissash.IA
             }
         }
 
-        private Collider2D Detected(IABrain brain)
+        private Collider2D Detecting(IABrain brain)
         {
-           return Physics2D.OverlapBox(brain.Position, sensorDimensions, 0, whatIsPlayer);
-        }        
+           return Physics2D.OverlapBox(brain.Position, sensorDimention, 0, whatIsPlayer);
+        }
+        
+        public void DetectedEvent<T>(Action<T> action, T pValue, LayerMask layer)
+        {
+            var coll = Physics2D.Raycast(brain.transform.GetChild(1).position, Vector2.down, 1f, layer);
+
+            if(coll.collider == null)
+                action(pValue);
+        }
+
+        public float MeasureDistance(Vector2 first, Vector2 second)
+        {
+            return Vector2.Distance(first, second);
+        }
     }
 }

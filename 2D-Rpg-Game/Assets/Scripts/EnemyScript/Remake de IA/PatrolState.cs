@@ -8,11 +8,11 @@ namespace Bissash.IA
     [CreateAssetMenu(menuName = "IA/States/PatrolState")]
     public class PatrolState : BaseState
     {
-
         public override void Enter(IABrain brain)
         {
             DoBehaviour(brain, behaviour.Init);
             brain.Sensor.StartCombat += CombatTrigger;
+            StatesValues.InitRandomValues();
         }
 
         public override void Excecute(IABrain brain)

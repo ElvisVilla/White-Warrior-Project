@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using Bissash.Util;
 
 [CreateAssetMenu(menuName = "Abilities/Melee/Basic Attack")]
 public class MeleeAttack : Ability
@@ -9,7 +10,7 @@ public class MeleeAttack : Ability
 
     public override void Init(Player player)
     {
-        _timer = CoolDownSeconds;
+        m_timer = new Timer(CoolDownSeconds);
         _abilityType = AbilityType.Melee;
         weaponProjection = new Vector2(Range, 1f);
         RuneController = FindObjectOfType<RuneController>();
@@ -17,16 +18,16 @@ public class MeleeAttack : Ability
 
     public override void UpdateAction(Player player, Transform weapon)
     {
-        _timer += Time.deltaTime;
+        m_timer.RunTimer();
         coll = Physics2D.OverlapBox(weapon.position, weaponProjection, 0f, _whatIsEnemy);
     }
 
     public override void Action(Player player)
     {
-        if (_timer >= CoolDownSeconds)
+        if (m_timer.ElapsedSeconds() >= CoolDownSeconds)
         {
             player.Anim.CrossFade(AnimationName, 0f);
-            _timer = 0f;
+            m_timer.ResetTimer();
             player.Stats.Speed = _minValueSpeed;
             IsCoolDown = true;
             DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);

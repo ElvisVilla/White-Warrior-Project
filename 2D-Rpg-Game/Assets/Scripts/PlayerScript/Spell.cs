@@ -23,7 +23,7 @@ public class Spell : MonoBehaviour, IPointerDownHandler
         coolDown = transform.GetChild(1).GetComponent<Image>();
         coolDown.fillAmount = 0f;
 
-        //Aplicamos transparencia ya que no habilidad por mostrar
+        //Aplicamos transparencia ya que no hay habilidad por mostrar
         if (ability == null)
             ownImage.color = new Color(0f, 0f, 0f, 0f);
 
@@ -35,7 +35,6 @@ public class Spell : MonoBehaviour, IPointerDownHandler
                 disableImage.enabled = true;
             }
         }
-            
     }
 
     void Update()
@@ -54,7 +53,6 @@ public class Spell : MonoBehaviour, IPointerDownHandler
         }
         else
             ownImage.color = new Color(0f,0f,0f,0f);
-
     }
 
     public void OnPointerDown(PointerEventData eventData)

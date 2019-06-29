@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6353e965679052147bf84e91c213698c, type: 3}
-  m_Name: PatrolState
+  m_Name: PatrolState 3
   m_EditorClassIdentifier: 
   stateValues:
     m_maxMovementSpeed: 1.5
     m_minMovementSpeed: 1.1
-    m_movementSpeed: 1.4019136
-    m_range: 5.6083717
+    m_movementSpeed: 1.2294371
+    m_range: 5.5023766
     m_maxRange: 6.7
     m_minRange: 5
     m_animationName: 
@@ -24,4 +24,4 @@ MonoBehaviour:
     whatIsFloor:
       serializedVersion: 2
       m_Bits: 256
-  behaviour: {fileID: 11400000, guid: bab2d0befb6eaaf44bd0f70044a18553, type: 2}
+  behaviour: {fileID: 11400000, guid: c2e11954aad5b7940a21364f11b2920e, type: 2}
