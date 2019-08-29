@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f321aec4c989a14486f0108292febf1, type: 3}
+  m_Name: Ataque Giratorio
+  m_EditorClassIdentifier: 
+  OnAbilityPressedEvent: {fileID: 11400000, guid: 013f74d2215b5af4180465720489c6aa,
+    type: 2}
+  OnCollisionLogicEvent: {fileID: 11400000, guid: 85cbc2c1526b4f44cbc4ee4f99e3753b,
+    type: 2}
+  _icon: {fileID: 21300000, guid: c1ea5a45aabf2c249be4747c7b61a539, type: 3}
+  _whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 4096
+  _minEffect: 2
+  _maxEffect: 4
+  _runeCost: 4
+  _range: 4.5
+  _coldDown: 3
+  _minValueSpeed: 13
+  _timeToTween: 0.8
+  _animationName: AtaqueGiratorio_warrior
+  _abilityType: 2
+  effects:
+    ParticleEffect: {fileID: 4924351642920738313, guid: c868deb25b1d13949b6340e55568ff7b,
+      type: 3}
+    SoundEffect: {fileID: 0}
+    offset: {x: 0, y: -0.52, z: 0}

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IAttack
 {
-    void Attack(IHealth entity);
+    void Attack(IDamageable entity);
 }

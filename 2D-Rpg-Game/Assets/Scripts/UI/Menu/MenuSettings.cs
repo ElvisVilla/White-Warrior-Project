@@ -7,9 +7,9 @@ public class MenuSettings : MonoBehaviour
 {
     private bool inManuQuitWindow = false;
 
-    public GameObject QuitGamePanel;
-    public GameObject MainMenuOptions;
-    public GameObject CreditsPanel;
+    public GameObject QuitGamePanel = null;
+    public GameObject MainMenuOptions = null;
+    public GameObject CreditsPanel = null;
 
     private void Update()
     {
@@ -39,12 +39,17 @@ public class MenuSettings : MonoBehaviour
         inManuQuitWindow = false;
         MainMenuOptions.SetActive(true);
         QuitGamePanel.SetActive(false);
-
     }
 
     public void SetLevel (int Index)
     {
-        SceneManager.LoadScene(Index);
+        StartCoroutine(LoadAsync(Index));
+    }
+
+    IEnumerator LoadAsync(int index)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(index);
+        yield return new WaitForEndOfFrame();
     }
 
     public void QuitGame()

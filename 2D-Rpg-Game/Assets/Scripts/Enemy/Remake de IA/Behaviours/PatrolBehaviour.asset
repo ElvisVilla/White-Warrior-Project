@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ce7a5a3adc15942a17596975a870dd, type: 3}
+  m_Name: PatrolBehaviour
+  m_EditorClassIdentifier: 
+  m_direction: {x: 0, y: 0, z: 0}
+  initialPos: {x: 8.44, y: -3.06, z: 0}
+  distance: 0.056819916
+  waypoints:
+  - {fileID: 7658055281521448992, guid: 77739e484d065234092db682d9b2513a, type: 3}
+  - {fileID: 7658055281309957144, guid: 77739e484d065234092db682d9b2513a, type: 3}
+  waypointTarget: {fileID: 7658055281309957144, guid: 77739e484d065234092db682d9b2513a,
+    type: 3}
+  index: 0
+  reachedDistance: 1
+  Speed: 0.25454253

@@ -8,10 +8,10 @@ public class PauseMenu : MonoBehaviour {
 
     public static bool GameIsPaused = false;
 
-    public GameObject PauseMenuUI;
-    public GameObject OptionsMenuUI;
-    public GameObject HudPanel;
-    Player player;
+    public GameObject PauseMenuUI = null;
+    public GameObject OptionsMenuUI = null;
+    public GameObject HudPanel = null;
+    Player player = null;
 
     private void Start()
     {
@@ -58,28 +58,18 @@ public class PauseMenu : MonoBehaviour {
     public void SetScene (int Index)
     {
         Resume();
-        SceneManager.LoadScene(Index);
+        StartCoroutine(LoadAsyncOperation(Index));
+    }
+
+    IEnumerator LoadAsyncOperation(int index)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(index);
+        yield return new WaitForEndOfFrame();
     }
 
     public void SetMainMenu (int index)
     {
         SceneManager.LoadScene(index);
-    }
-
-    public void SetMobile()
-    {
-        if(player.Motor.inputMode == Movement.InputType.Teclado)
-        {
-            player.Motor.inputMode = Movement.InputType.Joystick;
-        }
-    }
-
-    public void SetKeyword()
-    {
-        if (player.Motor.inputMode == Movement.InputType.Joystick)
-        {
-            player.Motor.inputMode = Movement.InputType.Teclado;
-        }
     }
 }   
 

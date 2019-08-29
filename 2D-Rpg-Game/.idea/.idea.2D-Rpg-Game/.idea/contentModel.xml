@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\ExtremeTech\.Rider2019.1\config\scratches" t="IncludeRecursive" />
+    <e p="C:\Users\ExtremeTech\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\ExtremeTech\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_2D-Rpg-Game.270490929.00" t="ExcludeRecursive" />
+    <e p="C:\Users\ExtremeTech\Documents\Proyectos\2D-RPG\2D-Rpg-Game" t="IncludeRecursive">
+      <e p="2D-Rpg-Game.sln" t="IncludeFlat" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Content" t="Include">
+          <e p="Sprites" t="Include">
+            <e p="GUI" t="Include">
+              <e p="Fantasy RPG Icon Set- Free" t="Include">
+                <e p="Notes.txt" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+        <e p="Lean" t="Include">
+          <e p="Common" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="LeanHelper.cs" t="Include" />
+              <e p="LeanInspector.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Pool" t="Include">
+            <e p="Examples" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="LeanPooledRigidbody.cs" t="Include" />
+                <e p="LeanPooledRigidbody2D.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Scripts" t="Include">
+              <e p="IPoolable.cs" t="Include" />
+              <e p="LeanClassPool.cs" t="Include" />
+              <e p="LeanGameObjectPool.cs" t="Include" />
+              <e p="LeanPool.cs" t="Include" />
+            </e>
+          </e>
+          <e p="READ ME.txt" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="BackgroundScrolling.cs" t="Include" />
+          <e p="CameraManager.cs" t="Include" />
+          <e p="EnemyScript" t="Include">
+            <e p="Old IA" t="Include">
+              <e p="ChaseState.cs" t="Include" />
+              <e p="CombatState.cs" t="Include" />
+              <e p="DeadState.cs" t="Include" />
+              <e p="Enemy.cs" t="Include" />
+              <e p="EnemyAttack.cs" t="Include" />
+              <e p="EnemyHealth.cs" t="Include" />
+              <e p="EnemyInfo.cs" t="Include" />
+              <e p="EnemyMovement.cs" t="Include" />
+              <e p="Patroling.cs" t="Include" />
+              <e p="State.cs" t="Include" />
+            </e>
+            <e p="Remake de IA" t="Include">
+              <e p="Code" t="Include">
+                <e p="BaseBehaviour.cs" t="Include" />
+                <e p="BaseState.cs" t="Include" />
+                <e p="Combat.cs" t="Include" />
+                <e p="Dead.cs" t="Include" />
+                <e p="IA_Enums.cs" t="Include" />
+                <e p="IABrain.cs" t="Include" />
+                <e p="IAMotor.cs" t="Include" />
+                <e p="PatrolState.cs" t="Include" />
+                <e p="Sensor.cs" t="Include" />
+                <e p="SoldierPatrolBehaviour.cs" t="Include" />
+                <e p="StateMachine.cs" t="Include" />
+                <e p="StateValues.cs" t="Include" />
+                <e p="Transition.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="ExtensionMethods" t="Include">
+            <e p="Timer.cs" t="Include" />
+            <e p="TransformExtensions.cs" t="Include" />
+          </e>
+          <e p="FloatingText.cs" t="Include" />
+          <e p="IAttack.cs" t="Include" />
+          <e p="IHealth.cs" t="Include" />
+          <e p="PlayerScript" t="Include">
+            <e p="Ability.cs" t="Include" />
+            <e p="CharacterStats.cs" t="Include" />
+            <e p="CombatActions.cs" t="Include" />
+            <e p="Heal.cs" t="Include" />
+            <e p="MeleeAttack.cs" t="Include" />
+            <e p="MeleeSpecialAttack.cs" t="Include" />
+            <e p="Movement.cs" t="Include" />
+            <e p="ParticlesController.cs" t="Include" />
+            <e p="Player.cs" t="Include" />
+            <e p="PlayerHealth.cs" t="Include" />
+            <e p="Rune.cs" t="Include" />
+            <e p="RuneController.cs" t="Include" />
+            <e p="Slot.cs" t="Include" />
+            <e p="Spell.cs" t="Include" />
+            <e p="SpellBar.cs" t="Include" />
+          </e>
+          <e p="PropsSCript" t="Include">
+            <e p="BushInteraction.cs" t="Include" />
+            <e p="Destroyable.cs" t="Include" />
+            <e p="InteractionWithSword.cs" t="Include" />
+          </e>
+          <e p="UI" t="Include">
+            <e p="Inventory Test" t="Include">
+              <e p="TestInventory.cs" t="Include" />
+              <e p="TestItem.cs" t="Include" />
+              <e p="TestSlot.cs" t="Include" />
+            </e>
+            <e p="Joysticks" t="Include">
+              <e p="FixedJoystick.cs" t="Include" />
+              <e p="FloatingJoystick.cs" t="Include" />
+              <e p="Joystick.cs" t="Include" />
+              <e p="VariableJoystick.cs" t="Include" />
+            </e>
+            <e p="Menu" t="Include">
+              <e p="MenuSettings.cs" t="Include" />
+              <e p="PauseMenu.cs" t="Include" />
+            </e>
+            <e p="Test.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Tools Resources" t="Include">
+          <e p="Demigiant" t="Include">
+            <e p="DOTween" t="Include">
+              <e p="Modules" t="Include">
+                <e p="DOTweenModuleAudio.cs" t="Include" />
+                <e p="DOTweenModulePhysics.cs" t="Include" />
+                <e p="DOTweenModulePhysics2D.cs" t="Include" />
+                <e p="DOTweenModuleSprite.cs" t="Include" />
+                <e p="DOTweenModuleUI.cs" t="Include" />
+                <e p="DOTweenModuleUnityVersion.cs" t="Include" />
+                <e p="DOTweenModuleUtils.cs" t="Include" />
+              </e>
+              <e p="readme.txt" t="Include" />
+            </e>
+          </e>
+          <e p="TextMesh Pro" t="Include">
+            <e p="Resources" t="Include">
+              <e p="LineBreaking Following Characters.txt" t="Include" />
+              <e p="LineBreaking Leading Characters.txt" t="Include" />
+              <e p="Shaders" t="Include">
+                <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+                <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+                <e p="TMP_Bitmap.shader" t="Include" />
+                <e p="TMP_SDF Overlay.shader" t="Include" />
+                <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+                <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+                <e p="TMP_SDF-Mobile.shader" t="Include" />
+                <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+                <e p="TMP_SDF-Surface.shader" t="Include" />
+                <e p="TMP_SDF.shader" t="Include" />
+                <e p="TMP_Sprite.shader" t="Include" />
+                <e p="TMPro.cginc" t="Include" />
+                <e p="TMPro_Properties.cginc" t="Include" />
+                <e p="TMPro_Surface.cginc" t="Include" />
+              </e>
+            </e>
+            <e p="Sprites" t="Include">
+              <e p="EmojiOne Attribution.txt" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

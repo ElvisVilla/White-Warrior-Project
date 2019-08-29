@@ -1,50 +1,61 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : MonoBehaviour
+{
 
-    //TargetGroup
-    //CameraPrincipal
-    [SerializeField] CinemachineVirtualCamera playerCam;
-    [SerializeField] CinemachineVirtualCamera shakeCam;
-    [SerializeField] CinemachineStateDrivenCamera stateDrivenCam;
+    [SerializeField] CinemachineVirtualCamera playerCam = null;
+    [SerializeField] CinemachineVirtualCamera healCam = null;
+    private CinemachineBasicMultiChannelPerlin noise;
 
     public float shakeTime = 0.2f;
-    //Camera State Driven
+    public float amplitud;
+    public float frecuency;
 
-	// Use this for initialization
 	void Start ()
     {
         playerCam.Priority = 10;
-        shakeCam.Priority = 9;
-        stateDrivenCam.Priority = 9;
+        healCam.Priority = 9;
+        noise = playerCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        ResetCameraShake();
     }
 
-    public IEnumerator OnAbilityEffect(AbilityType type)
+    //Metodo que establesca el camera group para los eventos de combate.
+
+    public void OnAbilityCameraEffect(Ability ability)
     {
-        switch (type)
+        IEnumerator OnAbilityEffect(Ability ab)
         {
-            case AbilityType.Melee:
-                shakeCam.Priority = 11;
 
+            if (ab.AbilityType == AbilityType.AreaMelee || ab.AbilityType == AbilityType.Melee)
+            {
+                SetShakeValues();
                 yield return new WaitForSeconds(shakeTime);
-                shakeCam.Priority = 9;
-                break;
-            case AbilityType.Magic:
-                stateDrivenCam.Priority = 11;
+                ResetCameraShake();
+            }
+            else if (ab.AbilityType == AbilityType.Magic)
+            {
+                healCam.Priority = 11;
+                yield return new WaitForSeconds(0.7f);
+                healCam.Priority = 9;
+            }
 
-                yield return new WaitForSeconds(2f);
-                stateDrivenCam.Priority = 9;
-                break;
+            yield return 0;
         }
-        //Mas opciones.
-        yield return 0;
+
+        StartCoroutine(OnAbilityEffect(ability));
     }
 
-    private void SetCamerasPriority(int value1 = 9, int value2 = 10, int value3 = 11)
+    private void SetShakeValues()
     {
-       
+        noise.m_AmplitudeGain = amplitud;
+        noise.m_FrequencyGain = frecuency;
+    }
+
+    private void ResetCameraShake()
+    {
+        noise.m_AmplitudeGain = 0f;
+        noise.m_FrequencyGain = 0f;
     }
 }
