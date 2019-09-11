@@ -5,17 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MenuSettings : MonoBehaviour
 {
-    private bool inManuQuitWindow = false;
+    private bool isManuQuitWindow = false;
 
-    public GameObject QuitGamePanel = null;
     public GameObject MainMenuOptions = null;
-    public GameObject CreditsPanel = null;
+    public GameObject QuitGameDialog = null;
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(!inManuQuitWindow)
+            if(!isManuQuitWindow)
             {
                 PreviewQuitGame();
             }
@@ -28,17 +27,16 @@ public class MenuSettings : MonoBehaviour
 
     public void PreviewQuitGame ()
     {
-        inManuQuitWindow = true;
+        isManuQuitWindow = true;
         MainMenuOptions.SetActive(false);
-        QuitGamePanel.SetActive(true);
-        CreditsPanel.SetActive(false);
+        QuitGameDialog.SetActive(true);
     }
 
     public void DontQuitGame ()
     {
-        inManuQuitWindow = false;
+        isManuQuitWindow = false;
         MainMenuOptions.SetActive(true);
-        QuitGamePanel.SetActive(false);
+        QuitGameDialog.SetActive(false);
     }
 
     public void SetLevel (int Index)
@@ -54,7 +52,6 @@ public class MenuSettings : MonoBehaviour
 
     public void QuitGame()
     {
-
         Application.Quit();
     }
 }

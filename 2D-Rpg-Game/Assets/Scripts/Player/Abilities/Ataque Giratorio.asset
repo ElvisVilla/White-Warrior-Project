@@ -12,17 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f321aec4c989a14486f0108292febf1, type: 3}
   m_Name: Ataque Giratorio
   m_EditorClassIdentifier: 
-  OnAbilityPressedEvent: {fileID: 11400000, guid: 013f74d2215b5af4180465720489c6aa,
-    type: 2}
-  OnCollisionLogicEvent: {fileID: 11400000, guid: 85cbc2c1526b4f44cbc4ee4f99e3753b,
-    type: 2}
   _icon: {fileID: 21300000, guid: c1ea5a45aabf2c249be4747c7b61a539, type: 3}
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 4096
   _minEffect: 2
   _maxEffect: 4
-  _runeCost: 4
+  _runeCost: 0
   _range: 4.5
   _coldDown: 3
   _minValueSpeed: 13

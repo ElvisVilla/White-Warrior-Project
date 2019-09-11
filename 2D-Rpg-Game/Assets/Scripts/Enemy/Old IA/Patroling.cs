@@ -30,8 +30,8 @@ public class Patroling : State
 
     private void PerformTransition(Collider2D hitInfo)
     {
-        if (playerHealth == null && hitInfo != null)
-            playerHealth = hitInfo.GetComponent<PlayerHealth>();
+        //Establece el componente una sola vez.
+        hitInfo?.transform.GetComponentOnce(ref playerHealth);
 
         if (hitInfo != null && playerHealth.CurrentHealth > 0)
             OnCombatState();

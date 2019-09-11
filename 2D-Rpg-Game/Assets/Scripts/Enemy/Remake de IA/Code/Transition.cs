@@ -10,7 +10,7 @@ namespace Bissash.IA
 
         public void Desitions(IABrain brain)
         {
-            current.Transitions(brain);
+            //current.Transitions(brain);
         }
     }
 }

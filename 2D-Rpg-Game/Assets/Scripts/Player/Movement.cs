@@ -2,40 +2,32 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-using Bissash.IA;
+using Bissash;
 using UnityEngine.InputSystem;
 
-public enum MovementState
-{
-    Controllable,
-    NonControllable,
-    AbilityBehaviour,
-}
-
-[Serializable]
 public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
 {
     #region Variables
 
-    //Movement Variables.
+    float moveSpeed = 0f;
     private Vector2 direction = Vector2.zero;
     private MovementState movementState;
-    public FacingSide FacingSide { get; set; }
+    private FacingSide facingSide;
+    public FacingSide FacingSide { get { return facingSide; } set { facingSide = value; } }
 
     [Header("Physics resources")]
     [SerializeField] private Transform groundChecker = null;
     [SerializeField] private LayerMask groundLayer = new LayerMask();
     [SerializeField] private float fallMultiplier = 2.1f;
-    private const float radius = 0.02f;
-    bool grounded = false;
+    bool grounded;
     private int extraJumps = 0;
-    public float speed = 0f;
 
     [Header("Set resources")]
     [SerializeField] private ParticleEmiter LandedEffect = null;
     [SerializeField] private ParticleEmiter RunningEffect = null;
     [SerializeField] private AudioClip groundContactClip = null;
     [Range(0f, 1f)] [SerializeField] private float volume = 0f;
+    private bool groundedSoundAlreadyPlayed = false;
 
     //Components
     AudioSource source;
@@ -43,8 +35,7 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
     Animator anim;
     CharacterStats stats;
     PlayerHealth health;
-    SpriteRenderer renderer2D;
-
+    [HideInInspector] public SpriteRenderer renderer2D;
     Player player;
     #endregion
 
@@ -59,79 +50,52 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
         health = GetComponent<PlayerHealth>();
         renderer2D = GetComponentInChildren<SpriteRenderer>();
 
-       source.volume = volume;
+        source.volume = volume;
     }
 
     private void Update()
     {
         Move();
-        GroundedParticlesEffects();
+        GroundedEffects();
     }
 
     void Move()
     {
-        //Falta el MovementState.AbilityBehaviour
         //El movimiento arbitrario del jugador.
         if (movementState == MovementState.Controllable)
-            speed = direction.x * stats.Speed;
+            moveSpeed = direction.x * stats.Speed;
 
         //Movement.NonControllable, no habra movimiento asi se precionen los inputs.
         //Movement.AbilityBehaviour no permitira movimiento y sera guiado por el comportamiento de la habilidad.
         else if (movementState == MovementState.NonControllable || movementState == MovementState.AbilityBehaviour)
-            speed = 0f;
+            moveSpeed = 0f;
 
-        OrientationSprite(speed);
-        body2D.velocity = new Vector2(speed, body2D.velocity.y);
+        renderer2D.OrientationSprite(moveSpeed, ref facingSide);
+        body2D.velocity = new Vector2(moveSpeed, body2D.velocity.y);
 
-        anim.SetFloat("Speed", speed);
-        anim.SetBool("Grounded", grounded);
-        anim.SetBool("Falling", !grounded);
-    }
-    
-    //Al trabajar la rotacion con el sprite evitamos que la direccion del ataque sea afectado con la rotacion del personaje.
-    //Esto nos da libertad de dirigir el ataque respecto a la direccion que el jugador tenia al momento de presionar la habilidad.
-    void OrientationSprite(float speed)
-    {
-        if (speed > 0f)
-        {
-            FacingSide = FacingSide.Right;
-            renderer2D.flipX = false;
-        }
-        else if (speed < 0f)
-        {
-            FacingSide = FacingSide.Left;
-            renderer2D.flipX = true;
-        }
-        else
-        {
-            if(FacingSide == FacingSide.Left)
-            {
-                renderer2D.flipX = true;
-            }
-            else if(FacingSide == FacingSide.Right)
-            {
-                renderer2D.flipX = false;
-            }
-        }
+        anim.PerformAnimation("Speed", moveSpeed);
+        anim.PerformAnimation("Grounded", grounded);
+        anim.PerformAnimation("Falling", !grounded);
+
     }
 
     public void Jump()
     {
-        if(movementState == MovementState.Controllable)
+        if (movementState == MovementState.Controllable)
         {
             if (grounded)
             {
-                anim.SetTrigger("Salto");
+                anim.PerformTriggerAnimation("Salto");
                 body2D.velocity = Vector2.up * stats.GetStat("jumpForce");
                 extraJumps = 1;
-                LandedEffect.Play();
+                LandedEffect.PlayOnce();
             }
             else if ((extraJumps > 0) && !grounded)
             {
-                anim.SetTrigger("Salto");
+                anim.PerformTriggerAnimation("Salto");
                 body2D.velocity = Vector2.up * stats.GetStat("extraJumpForce");
                 extraJumps--;
-                LandedEffect.Play();
+                LandedEffect.PlayOnce();
             }
         }
     }
@@ -156,12 +120,14 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
         }
 
         BetterJump();
-        grounded = Physics2D.OverlapCircle(groundChecker.position, radius, groundLayer);
+
+        grounded = Physics2D.Raycast(groundChecker.position, Vector2.down, 0.2f, groundLayer);
+
     }
 
-    void GroundedParticlesEffects()
+    void GroundedEffects()
     {
-        if (grounded  && body2D.velocity != Vector2.zero)
+        if (grounded && body2D.velocity != Vector2.zero)
         {
             RunningEffect.Play();
         }
@@ -169,9 +135,18 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
         {
             RunningEffect.Stop();
         }
+
+        if (grounded && groundedSoundAlreadyPlayed == false)
+        {
+            source.PlayOneShot(groundContactClip);
+            groundedSoundAlreadyPlayed = true;
+
+        }
+        else if (grounded == false)
+            groundedSoundAlreadyPlayed = false;
     }
 
-    public void KnockBackDamage(Player player)
+    public void KnockBackBehaviour(Player player)
     {
         IEnumerator KnockBack()
         {
@@ -189,26 +164,34 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
 
         player.StartCoroutine(KnockBack());
     }
-    
+
     public void NonAllowedToMove(Player player, float seconds)
     {
-        IEnumerator OnNonControl(float sec)
+        IEnumerator NonControl(float sec)
         {
             movementState = MovementState.NonControllable;
             yield return new WaitForSeconds(sec);
             movementState = MovementState.Controllable;
         }
 
-        player.StartCoroutine(OnNonControl(seconds));
+        player.StartCoroutine(NonControl(seconds));
     }
 
+    #region New Input System
     public void OnMovement(InputAction.CallbackContext context)
     {
-        direction = context.ReadValue<Vector2>();     
+        direction = context.ReadValue<Vector2>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
         Jump();
+    }
+    #endregion
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(groundChecker.position, Vector3.down * 0.2f);
     }
 }

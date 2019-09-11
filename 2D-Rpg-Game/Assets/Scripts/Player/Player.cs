@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public PlayerHealth Health { get; private set; }
     public Animator Anim { get; private set; }
     public Movement Movement { get; private set; }
+    public CameraManager CameraManager { get; private set; }
 
     private PlayerControls playerControls;
 
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
         Movement = GetComponent<Movement>();
         Health = GetComponent<PlayerHealth>();
         Anim = GetComponentInChildren<Animator>();
+        CameraManager = FindObjectOfType<CameraManager>();
 
         //Player Inputs.
         playerControls = new PlayerControls();

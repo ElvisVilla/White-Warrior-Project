@@ -7,16 +7,20 @@ namespace Bissash.IA
     [CreateAssetMenu(menuName = "IA/States/Combat")]
     public class Combat : BaseState
     {
-        //Vector3 startPosition;
+        private void OnEnable()
+        {
+            StateType = StateType.Combat;
+            stateValues.InitRandomValues();
+        }
+
         public override void Enter(IABrain brain)
         {
-            //StatesValues.startPosition = brain.Position;
-            Debug.Log("Entramos");
+            behaviour.Init(brain, this);
         }
 
         public override void Excecute(IABrain brain)
         {
-            
+            behaviour.BehaviourExcecute(brain, this);
         }
 
         public override void Exit(IABrain brain)
@@ -26,13 +30,7 @@ namespace Bissash.IA
 
         public override void Transitions(IABrain brain)
         {
-            /*if(StatesValues.MaxRange < Vector3.Distance(StatesValues.startPosition,
-                brain.Sensor.TargetPosition))
-            {
-                brain.SetState(StateType.Patrol);
-            }*/
-
-           // if(brain.Healtj)
+            brain.SetState(StateType.Patrol);
         }
     }
 }

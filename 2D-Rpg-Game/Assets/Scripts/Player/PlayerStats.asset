@@ -21,5 +21,5 @@ MonoBehaviour:
   defence: 1
   magic: 10
   abilityPower: 2
-  jumpForce: 6.3
+  jumpForce: 7
   extraJumpForce: 4.2

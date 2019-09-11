@@ -394,13 +394,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bad8c927d2532546a6cb40e8409969a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LandedEffect: {fileID: 9112161651064783953}
-  RunningEffect: {fileID: 4795268097169662763}
   groundChecker: {fileID: 7152441941038009186}
   groundLayer:
     serializedVersion: 2
     m_Bits: 2304
   fallMultiplier: 2.1
+  LandedEffect: {fileID: 9112161651064783953}
+  RunningEffect: {fileID: 4795268097169662763}
   groundContactClip: {fileID: 8300000, guid: fdce197ae180c7a4a8323c105c3ea6fa, type: 3}
   volume: 1
 --- !u!114 &7152441940818456096
@@ -415,14 +415,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02aa56e3c15fd994d9011287d1b3a9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cameraManager: {fileID: 0}
+  weapon: {fileID: 7152441939769568081}
   m_playerStats: {fileID: 11400000, guid: 910a33178690a074386b478182d2dc27, type: 2}
   abilities:
   - {fileID: 11400000, guid: 80998ff3da974fe47af850cc27015ae8, type: 2}
   - {fileID: 11400000, guid: 21fb5d2f7739ea443ade0f1283264733, type: 2}
   - {fileID: 11400000, guid: 5c93d089945309f4aa49925ba08b6be5, type: 2}
   - {fileID: 11400000, guid: 97f48d28c9d720e49b4d4919ca487269, type: 2}
-  weapon: {fileID: 7152441939769568081}
 --- !u!1 &7152441941038009187
 GameObject:
   m_ObjectHideFlags: 0

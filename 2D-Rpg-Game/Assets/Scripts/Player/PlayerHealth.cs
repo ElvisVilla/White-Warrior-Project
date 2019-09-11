@@ -50,11 +50,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable {
             CurrentHealth = 0;
 
         slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
-        player.Movement.KnockBackDamage(player);
+        player.Movement.KnockBackBehaviour(player);
         healBarTextAmount.text = HealthText();
 
         int animHitParameter = Random.Range(1, 3);
-
         if(animHitParameter == 1)
             player.Anim.SetTrigger("TakeHit");
         else if(animHitParameter == 2)
@@ -65,6 +64,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable {
 
         if (CurrentHealth <= 0 && !IsDead)
             Die();
+
     }
 
     private void ShowDamage(int damage)

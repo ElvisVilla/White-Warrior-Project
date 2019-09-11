@@ -1,4 +1,4 @@
-﻿using Bissash.Util;
+﻿using Bissash;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -34,7 +34,9 @@ public class Heal : Ability
         {
             OnCollisionLogic(player);
 
-            OnAbilityPressedEvent.Raise(this);
+            //OnAbilityPressedEvent.Raise(this);
+            player.CameraManager.OnAbilityCameraEffect(this);
+            player.Anim.PerformCrossFade(AnimationName, 0f);
             m_timer.ResetTimer();
             action?.Invoke();
             particleEmiter.Play();
@@ -46,7 +48,7 @@ public class Heal : Ability
         player.Movement.NonAllowedToMove(player, seconds: 0.25f);
         Effect = UnityEngine.Random.Range(_minEffect, _maxEffect);
         player.Health.TakeHeal(Effect, Vector2.zero);
-        OnCollisionLogicEvent.Raise(this);
+        //OnCollisionLogicEvent.Raise(this);
     }
 
     public override void Remove()

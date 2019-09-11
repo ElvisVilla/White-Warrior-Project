@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
-using Bissash.Util;
-using Bissash.IA;
+using Bissash;
 using System;
 
 [CreateAssetMenu(menuName = "Abilities/Melee")]
@@ -42,15 +41,20 @@ public class MeleeAttack : Ability
     {
         if (m_timer.TimeHasComplete())
         {
-            //Refactorizar.
             //TODO: Crear una clase intermedia entre abilities y movement que se encargue de la logica del movimiento para las habilidades.
+            //Esa clase debe gestionar los impulsos de movimiento (si los hay) o detener el movimiento del jugador para los ataques que lo
+            //Requieran o detener el movimiento del jugador al colisionar con el enemigo.
             AttackDirection(player);
             player.Stats.Speed = _minValueSpeed;
             DOTween.Complete(player.Stats.Speed);
             DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);
+            if(RuneCost > 0)
+            {
+                FindObjectOfType<GhostTrail>().ShowGhost();
+            }
 
             //De momento este codigo esta bien.
-            OnAbilityPressedEvent.Raise(this);
+            player.Anim.PerformCrossFade(AnimationName, 0f);
             m_timer.ResetTimer();
             particleEmiter?.Play();
             action?.Invoke();
@@ -65,18 +69,18 @@ public class MeleeAttack : Ability
         {
             if (coll != null)
             {
-                IDamageable enemyHealth = coll.GetComponent<EnemyHealth>();
+                IDamageable enemyHealth = coll.GetComponent<IDamageable>();
 
-                if (enemyHealth?.CurrentHealth >= 1f)
+                if (enemyHealth?.CurrentHealth >= 1f) //Cambiar la interfaz para que admita IsDead.
                 {
                     int randomDamage = UnityEngine.Random.Range(_minEffect, _maxEffect);
                     enemyHealth.TakeDamage(randomDamage, Vector2.zero);
-                    OnCollisionLogicEvent.Raise(this);
+                    player.CameraManager.OnAbilityCameraEffect(this);
 
+                    //Evitamos cargar las runas cuando usamos un ataque que consuma runas.
                     if (RuneCost == 0) RuneController.ChargeRune();
                 }
             }
-
         }
     }
 

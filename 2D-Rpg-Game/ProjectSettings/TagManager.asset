@@ -28,7 +28,7 @@ TagManager:
   - PhysicProps
   - Enemy
   - TriggerProbs
-  - WayPoints
+  - WayPoint
   - EnemyAttack
   - Sword
   - Wall

@@ -26,6 +26,11 @@ namespace Bissash.IA
             runningState?.Excecute(brain);
         }
 
+        public bool SameAsCurrentState(BaseState state)
+        {
+            return state == currentlyRunningState;
+        }
+
     }
 }
 

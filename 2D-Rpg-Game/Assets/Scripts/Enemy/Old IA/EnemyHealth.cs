@@ -5,7 +5,8 @@ using System.Collections;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    //public event Func<IEnumerator> OnDamage;
+    public event Action OnDamage = delegate { };
+
     #region Properties
     public bool IsDead { get; private set; }
     public int CurrentHealth { get { return initialHealth; } set{ initialHealth = value; } }
@@ -16,6 +17,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private int minInitialHealth = 39;
     [SerializeField] private int maxInitialHealth = 41;
 
+    public GameEvent Event;
 
     Animator anim;
     CapsuleCollider2D coll;
@@ -23,37 +25,50 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     // Use this for initialization
     void Awake ()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
         coll = GetComponent<CapsuleCollider2D>();
-	}
 
-    void Start()
-    {
         initialHealth = UnityEngine.Random.Range(minInitialHealth, maxInitialHealth);
-        CurrentHealth = initialHealth;
         coll.isTrigger = false;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return maxInitialHealth;
     }
 
     public void TakeDamage(int damageAmount, Vector2 point)
     {
-        CurrentHealth -= damageAmount;
+        if(!IsDead)
+            CurrentHealth -= damageAmount;
+
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+            CurrentHealth = 0;
+            return;
+        }
 
         if (floatingTextPrefab != null)
         {
             ShowDamage(damageAmount);
         }
+
+        OnDamage?.Invoke();
     }
 
+    //TODO: Pooling.
     private void ShowDamage(int damage)
     {
         var instance = Instantiate(floatingTextPrefab, transform.position + new Vector3(0,1.3f,0), Quaternion.identity, transform);
         instance.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
-    public void Die()
+    void Die()
     {
         IsDead = true;
-        anim.CrossFade("Enemy_Die", 0f);
+        anim.PerformCrossFade("Enemy_Die", 0f);
         Destroy(gameObject, 5.2f);
         coll.isTrigger  = true;
     }

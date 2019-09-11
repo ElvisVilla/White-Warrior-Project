@@ -46,6 +46,7 @@ public class BushInteraction : MonoBehaviour
                 sortingOrder = hitInfo.GetComponentInChildren<SpriteRenderer>().sortingOrder;
                 if (sortingOrder < sprite.sortingOrder && isFaded == false)
                 {
+                    
                     sprite.DOFade(0.6f, 0.7f);
                     isFaded = true;
                 }

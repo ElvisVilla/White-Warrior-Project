@@ -16,9 +16,9 @@ public class DeadState : State
 
     public override void Excecute()
     {
-        motor.PerformNormalMovement(0f);
-        if(!health.IsDead)
-            health.Die();
+        //motor.PerformNormalMovement(0f);
+        //if(!health.IsDead)
+            //health.Die();
     }
 
     public override void Exit()

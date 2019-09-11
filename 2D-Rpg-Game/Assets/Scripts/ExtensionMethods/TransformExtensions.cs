@@ -5,6 +5,23 @@ using UnityEngine;
 public static class TransformExtensions
 {
     /// <summary>
+    /// Se establece la referencia del componente una sola vez. Util cuando se necesita obtener una referencia en 
+    /// MonoBehaviour.Update()
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="transform"></param>
+    /// <param name="componentToSet"></param>
+    public static void GetComponentOnce<T>(this Transform transform, ref T componentToSet)
+    {
+        if(componentToSet == null)
+        {
+            componentToSet = transform.GetComponent<T>();
+            if (componentToSet == null)
+                throw new Exception("No se encontro componente en este objeto");
+        }
+    }
+
+    /// <summary>
     /// Retorna una lista con los transform hijos.
     /// </summary>
     /// <param name="transform"></param>

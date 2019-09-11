@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using Bissash.Util;
+using Bissash;
 
 public class EnemyAttack : MonoBehaviour
 {
+    [TextArea(10,10)]
+    [SerializeField] string developerInfo;
     #region Variables
     [SerializeField] private int _minDamage = 6;
     [SerializeField] private int _maxDamage = 12;
@@ -10,24 +12,26 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] [Range(3f, 10)] private float _maxCoolDownAttack = 5f;
     [SerializeField] float _attackRange = 2f;
     [SerializeField] string _animationName = "Enemy_Attack";
-    int _animationHash;
     float _coolDown;
     int _damage;
     bool _playerInRange;
     Timer timerAttack;
 
-    Animator anim;
+    AnimationEvent anim;
     EnemyHealth ownHealth;
     Transform player;
     IDamageable playerHealth;
+
+    //Cambios
+    public float CoolDownSeconds => _coolDown;
+    public float Range => _attackRange;
     #endregion
 
     void Awake()
     {
-        _animationHash = Animator.StringToHash(_animationName);
         _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
 
-        anim = GetComponentInParent<Animator>();
+        anim = GetComponentInChildren<AnimationEvent>();
         player = GameObject.FindGameObjectWithTag("Player").transform; //Debe cambiarse.
         playerHealth = player.GetComponent<PlayerHealth>(); //Debe quitarse de aqui.
         ownHealth = GetComponentInParent<EnemyHealth>();
@@ -37,23 +41,23 @@ public class EnemyAttack : MonoBehaviour
 
     private void Update()
     {
-        timerAttack.RunTimer();
+        /*timerAttack.RunTimer();
         _playerInRange = (Vector2.Distance(player.position, transform.position) < _attackRange);
 
         if (timerAttack.TimeHasComplete() && _playerInRange)
         {
-            Attack();
-        }
+            PerformAttack();
+        }*/
     }
 
-    public void Attack()
+    public void PerformAttack()
     {
         //Este codigo debe cambiar.
         if (!ownHealth.IsDead && playerHealth.CurrentHealth > 0)
         {
             _damage = Random.Range(_minDamage, _maxDamage);
             _coolDown = Random.Range(_minCoolDownAttack, _maxCoolDownAttack);
-            anim.CrossFade(_animationHash, 0f);
+            //anim.PerformCrossFade(_animationName, 0f);
             timerAttack.ResetTimer();
         }
     }

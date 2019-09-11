@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using Bissash.Util;
+using Bissash;
 
 public enum AbilityType
 {
@@ -13,8 +13,6 @@ public enum AbilityType
 //Crear una clase normal que me permita hacer un custom editor que sirva para habilitar las opciones random de las habilidades.
 public abstract class Ability : ScriptableObject
 {
-    [SerializeField] protected AbilityEvent OnAbilityPressedEvent;
-    [SerializeField] protected AbilityEvent OnCollisionLogicEvent;
     [SerializeField] protected Sprite _icon;
     [SerializeField] protected LayerMask _whatIsEnemy;
     [SerializeField] protected int _minEffect;

@@ -11,12 +11,15 @@ namespace Bissash.IA
         private IABrain brain;
         [SerializeField] private Vector2 sensorDimention = Vector2.zero;
         [SerializeField] private LayerMask whatIsPlayer = new LayerMask();
-
-        [Header("Debug values")]
+        [SerializeField] private Transform groundChecker;
         [SerializeField] private BaseState currentState = null;
         [SerializeField] private Player targetReference = null;
 
         public Player Target => targetReference;
+
+        /// <summary>
+        /// Retorna la posicion del Target Actual.
+        /// </summary>
         public Vector2 TargetPosition 
         {
             get
@@ -28,7 +31,7 @@ namespace Bissash.IA
                 else return Vector2.zero;
             }
         }
-        public float TargetDistance => (TargetPosition - brain.Position).normalized.sqrMagnitude;
+        public float TargetDistance => Vector2.Distance(TargetPosition, brain.Position)/*.normalized.sqrMagnitude*/;
         public Vector2 Dimention => sensorDimention;
 
         public void Init(IABrain brain)
@@ -38,19 +41,40 @@ namespace Bissash.IA
 
         public void Update(IABrain brain)
         {
-            currentState = brain.StateMachine.CurrentState;
-
-            Collider2D coll = Physics2D.OverlapBox(brain.Position, sensorDimention, 0, whatIsPlayer);
+            if(currentState != brain.CurrentState)
+                currentState = brain.CurrentState;
         }
-        
-        public void OnDetect<T>(Action<T> action, T value, LayerMask layers)
+
+        public void OnNoFlorDetected(Action action, LayerMask layer, bool valueToCompare)
         {
-            var coll = Physics2D.Raycast(brain.transform.GetChild(1).position, Vector2.down, 1f, layers);
+            var coll = Physics2D.Raycast(groundChecker.position, Vector2.down, 1f, layer);
 
-            if(coll.collider == null)
-                action(value);
+            if(coll == valueToCompare)
+                action?.Invoke();
         }
 
-        public float Distance(Vector2 first, Vector2 second) => Vector2.Distance(first, second);
+        public void OnDetectBox2D(Vector2 position, Vector2 size, Action actionEvent)
+        {
+            var coll = Physics2D.OverlapBox(position, size, 0f, whatIsPlayer);
+
+            if (coll != null)
+            {
+                coll.transform.GetComponentOnce(ref targetReference); //Ontiene la referencia de target una sola vez.
+                actionEvent?.Invoke();
+            }
+        }
+
+        public bool OnPlayerDetected(Vector2 position, Vector2 size)
+        {
+            var coll = Physics2D.OverlapBox(position, size, 0f, whatIsPlayer);
+
+            if (coll != null)
+            {
+                coll.transform.GetComponentOnce(ref targetReference);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

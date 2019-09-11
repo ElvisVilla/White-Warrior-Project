@@ -21,6 +21,14 @@ public class ParticleEmiter : MonoBehaviour
         });
     }
 
+    public void PlayOnce()
+    {
+        particles.ForEach(particle =>
+        {
+            particle.Play();
+        });
+    }
+
     public void Play()
     {
         particles.ForEach(particle => 

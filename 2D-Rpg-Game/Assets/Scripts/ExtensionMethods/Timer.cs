@@ -2,10 +2,8 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Bissash.Util
+namespace Bissash
 {
-    public enum ResetMode { Manual, Automagic }
-
     public class Timer
     {
         private float currentSeconds;

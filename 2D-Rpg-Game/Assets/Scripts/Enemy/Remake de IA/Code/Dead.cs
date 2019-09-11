@@ -4,8 +4,13 @@ using UnityEngine;
 
 namespace Bissash.IA
 {
+    [CreateAssetMenu(menuName = "IA/States/Dead")]
     public class Dead : BaseState
     {
+        private void OnEnable()
+        {
+            StateType = StateType.Dead;
+        }
 
         public override void Enter(IABrain brain)
         {
