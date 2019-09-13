@@ -58,6 +58,8 @@ public class CombatBehaviour : BaseBehaviour
         float moveSpeed = values.MovementSpeed;
         float slowMoveSpeed = values.MinMoveSpeed;
 
+
+        //Cambiar la llamada de los metodos Move y solo actualizar el valor de velocidad.
         if (brain.timer.ElapsedSeconds() >= attack.GetCoolDown())
         {
             if(sensor.TargetDistance >= stopingDistance)

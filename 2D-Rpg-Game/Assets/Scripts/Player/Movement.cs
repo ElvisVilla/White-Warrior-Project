@@ -8,10 +8,9 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
 {
     #region Variables
-
     float moveSpeed = 0f;
     private Vector2 direction = Vector2.zero;
-    private MovementState movementState;
+    public MovementState movementState;
     private FacingSide facingSide;
     public FacingSide FacingSide { get { return facingSide; } set { facingSide = value; } }
 
@@ -62,12 +61,12 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
     void Move()
     {
         //El movimiento arbitrario del jugador.
-        if (movementState == MovementState.Controllable)
+        if (movementState == MovementState.Controllable || movementState == MovementState.PerformingAbility)
             moveSpeed = direction.x * stats.Speed;
 
         //Movement.NonControllable, no habra movimiento asi se precionen los inputs.
         //Movement.AbilityBehaviour no permitira movimiento y sera guiado por el comportamiento de la habilidad.
-        else if (movementState == MovementState.NonControllable || movementState == MovementState.AbilityBehaviour)
+        else if (movementState == MovementState.NonControllable)
             moveSpeed = 0f;
 
         renderer2D.OrientationSprite(moveSpeed, ref facingSide);
@@ -146,7 +145,7 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
             groundedSoundAlreadyPlayed = false;
     }
 
-    public void KnockBackBehaviour(Player player)
+    public void KnockBackBehaviour()
     {
         IEnumerator KnockBack()
         {
@@ -162,10 +161,10 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
                 movementState = MovementState.NonControllable;
         }
 
-        player.StartCoroutine(KnockBack());
+        StartCoroutine(KnockBack());
     }
 
-    public void NonAllowedToMove(Player player, float seconds)
+    public void NonAllowedToMove(float seconds)
     {
         IEnumerator NonControl(float sec)
         {
@@ -174,8 +173,21 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
             movementState = MovementState.Controllable;
         }
 
-        player.StartCoroutine(NonControl(seconds));
+        StartCoroutine(NonControl(seconds));
     }
+
+    public void PerformInvulnerable()
+    {
+        IEnumerator Invulnerable()
+        {
+            movementState = MovementState.PerformingAbility;
+            yield return new WaitForSeconds(2f);
+            movementState = MovementState.Controllable;
+        }
+
+        StartCoroutine(Invulnerable());
+    }
+    
 
     #region New Input System
     public void OnMovement(InputAction.CallbackContext context)

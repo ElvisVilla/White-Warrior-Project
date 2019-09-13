@@ -50,15 +50,22 @@ public class PlayerHealth : MonoBehaviour, IDamageable {
             CurrentHealth = 0;
 
         slider.DOValue(CurrentHealth, 0.7f).SetEase(Ease.Linear);
-        player.Movement.KnockBackBehaviour(player);
+        player.Movement.KnockBackBehaviour();
         healBarTextAmount.text = HealthText();
 
-        int animHitParameter = Random.Range(1, 3);
-        if(animHitParameter == 1)
-            player.Anim.SetTrigger("TakeHit");
-        else if(animHitParameter == 2)
-            player.Anim.SetTrigger("TakeDamage");
-
+        //if(player.Movement.movementState == Bissash.MovementState.PerformingAbility)
+        //{
+        //    int animHitParameter = Random.Range(1, 3);
+        //    if (animHitParameter == 1)
+        //        player.Anim.SetTrigger("TakeHit");
+        //    else if (animHitParameter == 2)
+        //        player.Anim.SetTrigger("TakeDamage");
+        //}
+        //else
+        //{
+            
+        //}
+        
         if (floatingTextPrefab != null)
             ShowDamage(damage);
 

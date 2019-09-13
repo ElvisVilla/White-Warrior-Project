@@ -11,12 +11,7 @@ public class PauseMenu : MonoBehaviour {
     public GameObject PauseMenuUI = null;
     public GameObject OptionsMenuUI = null;
     public GameObject HudPanel = null;
-    Player player = null;
 
-    private void Start()
-    {
-        player = FindObjectOfType<Player>();
-    }
     // Update is called once per frame
     void Update () {
 		
@@ -65,11 +60,6 @@ public class PauseMenu : MonoBehaviour {
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(index);
         yield return new WaitForEndOfFrame();
-    }
-
-    public void SetMainMenu (int index)
-    {
-        SceneManager.LoadScene(index);
     }
 }   
 

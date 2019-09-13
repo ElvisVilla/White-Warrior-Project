@@ -22,19 +22,21 @@ public class GhostTrail : MonoBehaviour
 
         transform.GetChildTransforms().ForEach(item =>
         {
-            secuence.AppendCallback(() => item.position = move.transform.position);
-            secuence.AppendCallback(() => item.GetComponent<SpriteRenderer>().enabled = true);
-            secuence.AppendCallback(() => item.GetComponent<SpriteRenderer>().flipX = move.renderer2D.flipX);
-            secuence.AppendCallback(() => item.GetComponent<SpriteRenderer>().sprite = move.renderer2D.sprite);
-            secuence.Append(item.GetComponent<SpriteRenderer>().material.DOColor(trailColor, 0));
-            secuence.AppendCallback(() => FadeSprite(item));
-            secuence.AppendInterval(ghostInterval);
+            SpriteRenderer renderer = item.GetComponent<SpriteRenderer>();
+
+            secuence.AppendCallback(() => item.position = move.transform.position)
+            .AppendCallback(() => renderer.enabled = true)
+            .AppendCallback(() => renderer.flipX = move.renderer2D.flipX)
+            .AppendCallback(() => renderer.sprite = move.renderer2D.sprite)
+            .Append(renderer.material.DOColor(trailColor, 0))
+            .AppendCallback(() => FadeSprite(renderer))
+            .AppendInterval(ghostInterval);
         });
     }
 
-    private void FadeSprite(Transform current)
+    private void FadeSprite(SpriteRenderer currentRenderer)
     {
-        current.GetComponent<SpriteRenderer>().material.DOKill();
-        current.GetComponent<SpriteRenderer>().material.DOColor(fadeColor, fadeTime);
+        currentRenderer.material.DOKill();
+        currentRenderer.material.DOColor(fadeColor, fadeTime);
     }
 }

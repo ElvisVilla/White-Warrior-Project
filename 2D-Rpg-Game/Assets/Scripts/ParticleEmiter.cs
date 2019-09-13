@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ParticleEmiter : MonoBehaviour
@@ -7,7 +6,7 @@ public class ParticleEmiter : MonoBehaviour
     private List<ParticleSystem> particles = new List<ParticleSystem>(10);
     [SerializeField] bool loop = false;
     [SerializeField] bool playOnAwake = false;
-    //bool alreadyPlayed = false;
+    public bool beingPlayed;
 
     private void OnEnable()
     {
@@ -29,10 +28,10 @@ public class ParticleEmiter : MonoBehaviour
         });
     }
 
-    public void Play()
+    public void Play() // I use this version when the particle needs to loop.
     {
         particles.ForEach(particle => 
-        {
+{        
             if (!particle.isPlaying)
             {
                 particle.Play();
@@ -40,11 +39,11 @@ public class ParticleEmiter : MonoBehaviour
         });
     }
 
-    public void Stop() //Podria ser buena idea crear una version con play with loop y otra sin playwith loop.
+    public void Stop() 
     {
         particles.ForEach(particle => 
         {
-            if (particle.isEmitting == true) //Es posible que esta comprobacion se deba realizar en el codigo donde se llama.
+            if (particle.isEmitting == true) 
             {
                 particle.Stop();
             }
@@ -59,4 +58,6 @@ public class ParticleEmiter : MonoBehaviour
             mainModule.loop = value;
         });
     }
+
+    public List<ParticleSystem> GetParticles() => particles;
 }

@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f321aec4c989a14486f0108292febf1, type: 3}
   m_Name: Ataque Basico
   m_EditorClassIdentifier: 
-  OnAbilityPressedEvent: {fileID: 11400000, guid: 013f74d2215b5af4180465720489c6aa,
-    type: 2}
-  OnCollisionLogicEvent: {fileID: 11400000, guid: 85cbc2c1526b4f44cbc4ee4f99e3753b,
-    type: 2}
   _icon: {fileID: 21300000, guid: bb32f7cbd9aadc448b465ba50bd4aea7, type: 3}
   _whatIsEnemy:
     serializedVersion: 2
@@ -30,6 +26,7 @@ MonoBehaviour:
   _animationName: GolpeBasico
   _abilityType: 1
   effects:
+    CustomFixes: 0
     ParticleEffect: {fileID: 0}
     SoundEffect: {fileID: 0}
     offset: {x: 0, y: 0, z: 0}

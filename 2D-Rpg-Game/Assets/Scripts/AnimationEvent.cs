@@ -31,7 +31,7 @@ public class AnimationEvent : MonoBehaviour
         {
             groundDetector.localPosition = new Vector3(0f, -0.37f, 0f);
             coll2D.size = new Vector2(0.5f, 0.8f);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.7f);
             groundDetector.localPosition = savedPosition;
             coll2D.size = savedSize;
         }

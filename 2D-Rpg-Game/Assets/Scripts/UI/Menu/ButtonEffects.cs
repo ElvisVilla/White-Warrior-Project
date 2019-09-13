@@ -16,24 +16,30 @@ public class ButtonEffects : MonoBehaviour, IPointerEnterHandler, IPointerDownHa
 
     RectTransform rectransform;
     Image backGroundImage;
-    AudioSource source;
+
+    [Tooltip("El Audio Source debe ser obtenido de un objeto que no se desactive y que pueda emitir el sonido")]
+    [SerializeField] AudioSource source; 
 
     public UnityEvent Event;
 
-
-
     private void Start()
     {
-        backGroundImage = GetComponentInParent<Image>();
+        backGroundImage = GetComponent<Image>();
         rectransform = (RectTransform)transform;
-        source = GetComponent<AudioSource>();
 
         backGroundImage.color = Color.clear;
+    }
+
+    private void OnDisable()
+    {
+        backGroundImage.color = Color.clear;
+        rectransform.DOScale(1, 0f);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         backGroundImage.color = color;
+        rectransform.DOKill();
         rectransform.DOScale(1.2f, 0.3f).SetEase(easeType);
         source.PlayOneShot(transitionSound);
     }
@@ -44,15 +50,10 @@ public class ButtonEffects : MonoBehaviour, IPointerEnterHandler, IPointerDownHa
         Event?.Invoke();
     }
 
-
     public void OnPointerExit(PointerEventData eventData)
     {
+        rectransform.DOKill();
         rectransform.DOScale(1, 0.3f).SetEase(easeType);
         backGroundImage.color = Color.clear;
     }
-
-    
-
-    
-    
 }

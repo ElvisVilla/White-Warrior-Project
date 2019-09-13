@@ -56,9 +56,36 @@ public abstract class Ability : ScriptableObject
 [Serializable]
 public struct Effects
 {
+    public bool CustomFixes;
     public GameObject ParticleEffect;
+    private ParticleEmiter particleEmiter;
     public AudioClip SoundEffect;
     public Vector3 offset;
 
+    private GameObject particleInstance;
     public Quaternion ParticleRotation => ParticleEffect.transform.rotation;
+
+    public void Init(Player player)
+    {
+        if (ParticleEffect != null)
+        {
+            var particlesParent = player.transform.GetChildByName("Particles Effects");
+            var desiredPosition = player.transform.GetChildByName("Ground Checker").position;
+
+            particleInstance = UnityEngine.Object.Instantiate(ParticleEffect, desiredPosition + offset,
+                ParticleRotation, particlesParent);
+            particleEmiter = particleInstance.GetComponent<ParticleEmiter>();
+        }
+    }
+
+    public void PlayParticles()
+    {
+        particleEmiter?.PlayOnce();
+    }
+
+    public void CleanParcilesOnRemove()
+    {
+        if(particleInstance != null)
+            UnityEngine.Object.Destroy(particleInstance);
+    }
 }

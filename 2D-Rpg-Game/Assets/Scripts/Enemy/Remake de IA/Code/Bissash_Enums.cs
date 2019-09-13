@@ -21,7 +21,7 @@ namespace Bissash
     {
         Controllable,
         NonControllable,
-        AbilityBehaviour,
+        PerformingAbility,
     }
 
     public enum CombatMode

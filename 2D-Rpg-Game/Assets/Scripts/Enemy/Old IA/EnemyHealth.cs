@@ -17,8 +17,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private int minInitialHealth = 39;
     [SerializeField] private int maxInitialHealth = 41;
 
-    public GameEvent Event;
-
     Animator anim;
     CapsuleCollider2D coll;
 

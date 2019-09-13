@@ -7,7 +7,7 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera playerCam = null;
     [SerializeField] CinemachineVirtualCamera healCam = null;
-    private CinemachineBasicMultiChannelPerlin noise;
+    private CinemachineBasicMultiChannelPerlin noiseModule;
 
     public float shakeTime = 0.2f;
     public float amplitud;
@@ -17,7 +17,7 @@ public class CameraManager : MonoBehaviour
     {
         playerCam.Priority = 10;
         healCam.Priority = 9;
-        noise = playerCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        noiseModule = playerCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         ResetCameraShake();
     }
 
@@ -47,15 +47,27 @@ public class CameraManager : MonoBehaviour
         StartCoroutine(OnAbilityEffect(ability));
     }
 
+    public void SimpleShake()
+    {
+        IEnumerator Shake()
+        {
+            SetShakeValues();
+            yield return new WaitForSeconds(shakeTime);
+            ResetCameraShake();
+        }
+
+        StartCoroutine(Shake());
+    }
+
     private void SetShakeValues()
     {
-        noise.m_AmplitudeGain = amplitud;
-        noise.m_FrequencyGain = frecuency;
+        noiseModule.m_AmplitudeGain = amplitud;
+        noiseModule.m_FrequencyGain = frecuency;
     }
 
     private void ResetCameraShake()
     {
-        noise.m_AmplitudeGain = 0f;
-        noise.m_FrequencyGain = 0f;
+        noiseModule.m_AmplitudeGain = 0f;
+        noiseModule.m_FrequencyGain = 0f;
     }
 }

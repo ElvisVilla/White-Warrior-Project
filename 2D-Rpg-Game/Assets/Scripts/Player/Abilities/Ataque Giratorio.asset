@@ -26,6 +26,7 @@ MonoBehaviour:
   _animationName: AtaqueGiratorio_warrior
   _abilityType: 2
   effects:
+    CustomFixes: 1
     ParticleEffect: {fileID: 4924351642920738313, guid: c868deb25b1d13949b6340e55568ff7b,
       type: 3}
     SoundEffect: {fileID: 0}

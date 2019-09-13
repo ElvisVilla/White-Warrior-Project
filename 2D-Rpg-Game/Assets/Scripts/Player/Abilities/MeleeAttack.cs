@@ -13,23 +13,15 @@ public class MeleeAttack : Ability
     //Effects variables
     private GameObject particleInstance;
     private ParticleEmiter particleEmiter;
+    private GhostTrail ghostTrail;
 
     public override void Init(Player player, RuneController runeController)
     {
         base.Init(player, runeController);
-        weaponProjection.Set(Range, 1.5f);
+        effects.Init(player);
 
-        //Mover este codigo a otra clase que se encargue de instanciar el efecto a la posicion y al transform correcto,
-        //Tambien que se encargue de removerlo y de aplicar pooling si hace falta.
-        if(effects.ParticleEffect != null)
-        {
-            //Particles Effects es Empty GO que contiene a todos los efectos
-            var particlesParent = player.transform.GetChildByName("Particles Effects");
-            var desiredPosition = player.transform.GetChildByName("Ground Checker").position;
-            particleInstance = Instantiate(effects.ParticleEffect, desiredPosition + effects.offset,
-                effects.ParticleRotation, particlesParent);
-            particleEmiter = particleInstance.GetComponent<ParticleEmiter>();
-        }
+        ghostTrail = FindObjectOfType<GhostTrail>();
+        weaponProjection.Set(Range, 1.5f);
     }
 
     public override void AbilityUpdate(Player player)
@@ -41,22 +33,26 @@ public class MeleeAttack : Ability
     {
         if (m_timer.TimeHasComplete())
         {
-            //TODO: Crear una clase intermedia entre abilities y movement que se encargue de la logica del movimiento para las habilidades.
-            //Esa clase debe gestionar los impulsos de movimiento (si los hay) o detener el movimiento del jugador para los ataques que lo
-            //Requieran o detener el movimiento del jugador al colisionar con el enemigo.
+            /*TODO: Crear una clase intermedia entre abilities y movement que se encargue de la logica del movimiento 
+             * para las habilidades. Esa clase debe gestionar los impulsos de movimiento (si los hay)
+             * o detener el movimiento del jugador para los ataques que lo requieran o detener el movimiento del
+             * jugador al colisionar con el enemigo.*/
+
             AttackDirection(player);
+
+            //Realizar esto con DoMove()
             player.Stats.Speed = _minValueSpeed;
-            DOTween.Complete(player.Stats.Speed);
             DOTween.To(() => player.Stats.Speed, x => player.Stats.Speed = x, player.Stats.MaxSpeed, _timeToTween);
-            if(RuneCost > 0)
+
+            if (RuneCost > 0)
             {
-                FindObjectOfType<GhostTrail>().ShowGhost();
+                ghostTrail.ShowGhost();
             }
 
             //De momento este codigo esta bien.
             player.Anim.PerformCrossFade(AnimationName, 0f);
             m_timer.ResetTimer();
-            particleEmiter?.Play();
+            effects.PlayParticles();
             action?.Invoke();
         }
     }
@@ -105,6 +101,6 @@ public class MeleeAttack : Ability
     //no veo la necesidad de realizar pooling.
     public override void Remove()
     {
-        Destroy(particleInstance);
+        effects.CleanParcilesOnRemove();
     }
 }

@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ad924a0c816f8408d1ba54748dec0e, type: 3}
   m_Name: Heal
   m_EditorClassIdentifier: 
-  OnAbilityPressedEvent: {fileID: 11400000, guid: 013f74d2215b5af4180465720489c6aa,
-    type: 2}
-  OnCollisionLogicEvent: {fileID: 11400000, guid: 85cbc2c1526b4f44cbc4ee4f99e3753b,
-    type: 2}
   _icon: {fileID: 21300000, guid: 411f88b287eb8504aa08edb04c1443c6, type: 3}
   _whatIsEnemy:
     serializedVersion: 2
@@ -26,7 +22,7 @@ MonoBehaviour:
   _range: 2
   _coldDown: 3
   _minValueSpeed: 0
-  _timeToTween: 1
+  _timeToTween: 5
   _animationName: Heal
   _abilityType: 3
   effects:

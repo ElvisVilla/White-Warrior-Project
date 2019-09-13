@@ -14,8 +14,8 @@ public class BushInteraction : MonoBehaviour
     [SerializeField] AudioClip clip = null;
     [Range(0f, 1f)] [SerializeField] float volume = 0f;
 
-    int animID = Animator.StringToHash("Move");
     bool alreadyPlayed = false;
+    float secondsToFade = 0.5f;
 
     Animator anim;
     SpriteRenderer sprite;
@@ -41,18 +41,18 @@ public class BushInteraction : MonoBehaviour
     {
         if (hitInfo != null)
         {
-            if(sortingOrder == null)
+            anim.PerformTriggerAnimation("Move");
+
+            if (sortingOrder == null)
             {
                 sortingOrder = hitInfo.GetComponentInChildren<SpriteRenderer>().sortingOrder;
                 if (sortingOrder < sprite.sortingOrder && isFaded == false)
                 {
-                    
-                    sprite.DOFade(0.6f, 0.7f);
+                    sprite.DOKill();
+                    sprite.DOFade(0.6f, secondsToFade);
                     isFaded = true;
                 }
             }
-
-            anim.SetTrigger(animID);
 
             if (!alreadyPlayed)
             {
@@ -64,9 +64,11 @@ public class BushInteraction : MonoBehaviour
         {
             alreadyPlayed = false;
             sortingOrder = null;
+
             if (isFaded)
             {
-                sprite.DOFade(1f, 0.4f);
+                sprite.DOKill();
+                sprite.DOFade(1f, secondsToFade);
                 isFaded = false;
             }            
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SimpleEnemyAttack : MonoBehaviour
 {
@@ -19,17 +20,12 @@ public class SimpleEnemyAttack : MonoBehaviour
     public int Damage => Random.Range(minDamage, maxDamage);
     public float Range => range;
     public string AnimationName => animationName;
+    [SerializeField] CameraManager cam;
 
     // Start is called before the first frame update
     void Awake()
     {
         coolDown = Random.Range(minCoolDownSeconds, maxCoolDownSeconds);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public float GetCoolDown()
@@ -43,11 +39,11 @@ public class SimpleEnemyAttack : MonoBehaviour
         //Particles effects.
 
         var coll = Physics2D.OverlapBox(swordTransform.position, hitbox, 0f, whatIsTarget);
-
         if(coll != null)
         {
             PlayerHealth health = coll.GetComponent<PlayerHealth>();
             health.TakeDamage(Damage, Vector2.zero);
+            cam.SimpleShake();
         }
     }
 

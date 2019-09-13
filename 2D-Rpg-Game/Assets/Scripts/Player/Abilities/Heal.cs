@@ -12,15 +12,7 @@ public class Heal : Ability
     public override void Init(Player player, RuneController runeController)
     {
         base.Init(player, runeController);
-
-        if (effects.ParticleEffect != null)
-        {
-            var particlesParent = player.transform.GetChildByName("Particles Effects");
-            var ground = player.transform.GetChildByName("Ground Checker");
-            particleInstance = Instantiate(effects.ParticleEffect, ground.position + effects.offset,
-                effects.ParticleRotation, particlesParent);
-            particleEmiter = particleInstance.GetComponent<ParticleEmiter>();
-        }
+        effects.Init(player);
     }
 
     public override void AbilityUpdate(Player player)
@@ -39,20 +31,19 @@ public class Heal : Ability
             player.Anim.PerformCrossFade(AnimationName, 0f);
             m_timer.ResetTimer();
             action?.Invoke();
-            particleEmiter.Play();
+            effects.PlayParticles();
         }
     }
 
     public override void OnCollisionLogic(Player player)
     {
-        player.Movement.NonAllowedToMove(player, seconds: 0.25f);
+        player.Movement.NonAllowedToMove(seconds: 0.25f);
         Effect = UnityEngine.Random.Range(_minEffect, _maxEffect);
         player.Health.TakeHeal(Effect, Vector2.zero);
-        //OnCollisionLogicEvent.Raise(this);
     }
 
     public override void Remove()
     {
-        
+        effects.CleanParcilesOnRemove();
     }
 }
