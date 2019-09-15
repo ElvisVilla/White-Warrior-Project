@@ -7,6 +7,7 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera playerCam = null;
     [SerializeField] CinemachineVirtualCamera healCam = null;
+    [SerializeField] CinemachineVirtualCamera dialogueCam = null;
     private CinemachineBasicMultiChannelPerlin noiseModule;
 
     public float shakeTime = 0.2f;
@@ -22,6 +23,15 @@ public class CameraManager : MonoBehaviour
     }
 
     //Metodo que establesca el camera group para los eventos de combate.
+    public void SetDialogueCamera()
+    {
+        dialogueCam.Priority = 11;
+    }
+
+    public void ResetDialogueCamera()
+    {
+        dialogueCam.Priority = 9;
+    }
 
     public void OnAbilityCameraEffect(Ability ability)
     {

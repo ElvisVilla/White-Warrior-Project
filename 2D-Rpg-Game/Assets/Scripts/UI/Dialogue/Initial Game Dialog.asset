@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc1062afa5ac814580577fcb2a7c4c0, type: 3}
+  m_Name: Initial Game Dialog
+  m_EditorClassIdentifier: 
+  info:
+  - name: Jefe
+    portrait: {fileID: 21300062, guid: 635e263fa39871745bd59ff1931292bb, type: 3}
+    text: "Bienvenido, esta es nuestra primera misi\xF3n, nos han encargado investigar
+      \ esta zona, nuestros centinelas han visto mucho movimiento por parte de los
+      mercenarios del este, yo me adelantare y nos veremos mas adelante."
+  - name: Jefe
+    portrait: {fileID: 21300062, guid: 635e263fa39871745bd59ff1931292bb, type: 3}
+    text: "Antes de partir debemos prepararnos, haremos una peque\xF1a simulaci\xF3n
+      de combate para saber si todo anda bien con tus habilidades."
+  - name: Jefe
+    portrait: {fileID: 21300062, guid: 635e263fa39871745bd59ff1931292bb, type: 3}
+    text: Prueba tus habilidades en esa caja, cuando acabes estaremos listos para
+      partir. Seria imprudente de mi parte llevar a un soldado que no puede manejar
+      la espada.
+  - name: Warrior
+    portrait: {fileID: 21300000, guid: b33a27378d882b84cbc2a6ae8b45c992, type: 3}
+    text: "Har\xE9 mi mejor esfuerzo!"
+  - name: Warrior
+    portrait: {fileID: 21300000, guid: b33a27378d882b84cbc2a6ae8b45c992, type: 3}
+    text: "Al finalizar la misi\xF3n me gustar\xEDa que me dieran el rango que merezco!"
+  - name: Warrior
+    portrait: {fileID: 21300000, guid: b33a27378d882b84cbc2a6ae8b45c992, type: 3}
+    text: "No tengo m\xE1s quejas!"

@@ -125,5 +125,11 @@ namespace Bissash.IA
             }
         }
     }
+
+    public struct BrainValues
+    {
+
+    }
+
 }
 

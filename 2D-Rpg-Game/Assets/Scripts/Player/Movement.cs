@@ -61,8 +61,10 @@ public class Movement : MonoBehaviour, PlayerControls.IMovementMapActions
     void Move()
     {
         //El movimiento arbitrario del jugador.
-        if (movementState == MovementState.Controllable || movementState == MovementState.PerformingAbility)
+        if (movementState == MovementState.Controllable)
+        {
             moveSpeed = direction.x * stats.Speed;
+        }
 
         //Movement.NonControllable, no habra movimiento asi se precionen los inputs.
         //Movement.AbilityBehaviour no permitira movimiento y sera guiado por el comportamiento de la habilidad.

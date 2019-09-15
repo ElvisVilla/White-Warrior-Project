@@ -17,7 +17,7 @@ MonoBehaviour:
     m_To: CM vHeal
     m_Blend:
       m_Style: 1
-      m_Time: 0.3
+      m_Time: 0.4
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
@@ -25,6 +25,28 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
   - m_From: CM vHeal
+    m_To: CM PlayerCam
+    m_Blend:
+      m_Style: 1
+      m_Time: 1
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM PlayerCam
+    m_To: CM DialogueCam
+    m_Blend:
+      m_Style: 1
+      m_Time: 1
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM DialogueCam
     m_To: CM PlayerCam
     m_Blend:
       m_Style: 1
